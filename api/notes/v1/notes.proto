@@ -10,21 +10,23 @@ option go_package = "github.com/shft1/grpc-notes/pkg/api/notes/v1";
 
 // NoteIDRequest - сообщение ID заметки
 message NoteIDRequest {
-  string id = 1;
+  string uuid = 1;
 }
 
-// CreateNoteRequest - сообщение заметки для создания
-message CreateNoteRequest {
+// NoteCreateRequest - сообщение заметки для создания
+message NoteCreateRequest {
   string title = 1;
-  string description = 2;
+  string desc = 2;
 }
 
 // Note - сообщение заметки
 message Note {
-  string id = 1;
+  string uuid = 1;
   string title = 2;
-  string description = 3;
-  google.type.DateTime created_at = 4;
+  string desc = 3;
+  bool is_del = 4;
+  google.type.DateTime created_at = 5;
+  google.type.DateTime updated_at = 6;
 }
 
 // NoteList - сообщение списка заметок
@@ -34,15 +36,15 @@ message NoteList {
 
 // NoteAPI - сервис заметок
 service NoteAPI {
-  // CreateNode - создание заметки
-  rpc CreateNode(CreateNoteRequest) returns(Note) {};
+  // CreateNote - создание заметки
+  rpc CreateNote(NoteCreateRequest) returns(Note) {};
 
-  // GetNodeByID - получение заметки по ID
-  rpc GetNodeByID(NoteIDRequest) returns(Note) {};
+  // GetNoteByID - получение заметки по ID
+  rpc GetNoteByID(NoteIDRequest) returns(Note) {};
 
-  // GetNodes - получение всех заметок
-  rpc GetNodes(google.protobuf.Empty) returns(NoteList) {};
+  // GetNotes - получение всех заметок
+  rpc GetNotes(google.protobuf.Empty) returns(NoteList) {};
 
-  // DeleteNodeByID - удалить заметку
-  rpc DeleteNodeByID(NoteIDRequest) returns(Note) {};
+  // DeleteNoteByID - удалить заметку
+  rpc DeleteNoteByID(NoteIDRequest) returns(Note) {};
 }
