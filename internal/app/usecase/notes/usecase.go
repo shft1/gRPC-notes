@@ -1,9 +1,9 @@
 package notes
 
-type useCase struct {
-	repo repository
+type noteUsecase struct {
+	repo noteRepository
 }
 
-func NewUseCase(repo repository) *useCase {
-	return &useCase{repo: repo}
+func NewNotesUseCase(repo noteRepository) *noteUsecase {
+	return &noteUsecase{repo: repo}
 }

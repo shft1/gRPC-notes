@@ -7,7 +7,7 @@ import (
 	"github.com/shft1/grpc-notes/internal/domain/notes"
 )
 
-func (uc *useCase) GetByID(ctx context.Context, id uuid.UUID) (*notes.Note, error) {
+func (uc *noteUsecase) GetByID(ctx context.Context, id uuid.UUID) (*notes.Note, error) {
 	note, err := uc.repo.GetByID(ctx, id)
 	if err != nil {
 		return nil, err
@@ -15,7 +15,7 @@ func (uc *useCase) GetByID(ctx context.Context, id uuid.UUID) (*notes.Note, erro
 	return note, nil
 }
 
-func (uc *useCase) GetMulti(ctx context.Context) ([]*notes.Note, error) {
+func (uc *noteUsecase) GetMulti(ctx context.Context) ([]*notes.Note, error) {
 	notes, err := uc.repo.GetMulti(ctx)
 	if err != nil {
 		return nil, err

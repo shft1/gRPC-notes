@@ -4,7 +4,6 @@ go 1.24.5
 
 require (
 	github.com/google/uuid v1.6.0
-	google.golang.org/genproto v0.0.0-20251222181119-0a764e51fe1b
 	google.golang.org/grpc v1.78.0
 	google.golang.org/protobuf v1.36.11
 )

@@ -7,10 +7,10 @@
 package v1
 
 import (
-	datetime "google.golang.org/genproto/googleapis/type/datetime"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -128,8 +128,8 @@ type Note struct {
 	Title         string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
 	Desc          string                 `protobuf:"bytes,3,opt,name=desc,proto3" json:"desc,omitempty"`
 	IsDel         bool                   `protobuf:"varint,4,opt,name=is_del,json=isDel,proto3" json:"is_del,omitempty"`
-	CreatedAt     *datetime.DateTime     `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt     *datetime.DateTime     `protobuf:"bytes,6,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -192,14 +192,14 @@ func (x *Note) GetIsDel() bool {
 	return false
 }
 
-func (x *Note) GetCreatedAt() *datetime.DateTime {
+func (x *Note) GetCreatedAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.CreatedAt
 	}
 	return nil
 }
 
-func (x *Note) GetUpdatedAt() *datetime.DateTime {
+func (x *Note) GetUpdatedAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.UpdatedAt
 	}
@@ -255,29 +255,29 @@ var File_api_notes_v1_notes_proto protoreflect.FileDescriptor
 
 const file_api_notes_v1_notes_proto_rawDesc = "" +
 	"\n" +
-	"\x18api/notes/v1/notes.proto\x12\fapi.notes.v1\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1agoogle/type/datetime.proto\"#\n" +
+	"\x18api/notes/v1/notes.proto\x12\fapi.notes.v1\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"#\n" +
 	"\rNoteIDRequest\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\"=\n" +
 	"\x11NoteCreateRequest\x12\x14\n" +
 	"\x05title\x18\x01 \x01(\tR\x05title\x12\x12\n" +
-	"\x04desc\x18\x02 \x01(\tR\x04desc\"\xc7\x01\n" +
+	"\x04desc\x18\x02 \x01(\tR\x04desc\"\xd1\x01\n" +
 	"\x04Note\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12\x12\n" +
 	"\x04desc\x18\x03 \x01(\tR\x04desc\x12\x15\n" +
-	"\x06is_del\x18\x04 \x01(\bR\x05isDel\x124\n" +
+	"\x06is_del\x18\x04 \x01(\bR\x05isDel\x129\n" +
 	"\n" +
-	"created_at\x18\x05 \x01(\v2\x15.google.type.DateTimeR\tcreatedAt\x124\n" +
+	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
-	"updated_at\x18\x06 \x01(\v2\x15.google.type.DateTimeR\tupdatedAt\"4\n" +
+	"updated_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"4\n" +
 	"\bNoteList\x12(\n" +
-	"\x05notes\x18\x01 \x03(\v2\x12.api.notes.v1.NoteR\x05notes2\x93\x02\n" +
-	"\aNoteAPI\x12C\n" +
+	"\x05notes\x18\x01 \x03(\v2\x12.api.notes.v1.NoteR\x05notes2\x87\x02\n" +
+	"\aNoteAPI\x12?\n" +
+	"\x06Create\x12\x1f.api.notes.v1.NoteCreateRequest\x1a\x12.api.notes.v1.Note\"\x00\x12<\n" +
+	"\aGetByID\x12\x1b.api.notes.v1.NoteIDRequest\x1a\x12.api.notes.v1.Note\"\x00\x12<\n" +
+	"\bGetMulti\x12\x16.google.protobuf.Empty\x1a\x16.api.notes.v1.NoteList\"\x00\x12?\n" +
 	"\n" +
-	"CreateNote\x12\x1f.api.notes.v1.NoteCreateRequest\x1a\x12.api.notes.v1.Note\"\x00\x12@\n" +
-	"\vGetNoteByID\x12\x1b.api.notes.v1.NoteIDRequest\x1a\x12.api.notes.v1.Note\"\x00\x12<\n" +
-	"\bGetNotes\x12\x16.google.protobuf.Empty\x1a\x16.api.notes.v1.NoteList\"\x00\x12C\n" +
-	"\x0eDeleteNoteByID\x12\x1b.api.notes.v1.NoteIDRequest\x1a\x12.api.notes.v1.Note\"\x00B.Z,github.com/shft1/grpc-notes/pkg/api/notes/v1b\x06proto3"
+	"DeleteByID\x12\x1b.api.notes.v1.NoteIDRequest\x1a\x12.api.notes.v1.Note\"\x00B.Z,github.com/shft1/grpc-notes/pkg/api/notes/v1b\x06proto3"
 
 var (
 	file_api_notes_v1_notes_proto_rawDescOnce sync.Once
@@ -293,25 +293,25 @@ func file_api_notes_v1_notes_proto_rawDescGZIP() []byte {
 
 var file_api_notes_v1_notes_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_api_notes_v1_notes_proto_goTypes = []any{
-	(*NoteIDRequest)(nil),     // 0: api.notes.v1.NoteIDRequest
-	(*NoteCreateRequest)(nil), // 1: api.notes.v1.NoteCreateRequest
-	(*Note)(nil),              // 2: api.notes.v1.Note
-	(*NoteList)(nil),          // 3: api.notes.v1.NoteList
-	(*datetime.DateTime)(nil), // 4: google.type.DateTime
-	(*emptypb.Empty)(nil),     // 5: google.protobuf.Empty
+	(*NoteIDRequest)(nil),         // 0: api.notes.v1.NoteIDRequest
+	(*NoteCreateRequest)(nil),     // 1: api.notes.v1.NoteCreateRequest
+	(*Note)(nil),                  // 2: api.notes.v1.Note
+	(*NoteList)(nil),              // 3: api.notes.v1.NoteList
+	(*timestamppb.Timestamp)(nil), // 4: google.protobuf.Timestamp
+	(*emptypb.Empty)(nil),         // 5: google.protobuf.Empty
 }
 var file_api_notes_v1_notes_proto_depIdxs = []int32{
-	4, // 0: api.notes.v1.Note.created_at:type_name -> google.type.DateTime
-	4, // 1: api.notes.v1.Note.updated_at:type_name -> google.type.DateTime
+	4, // 0: api.notes.v1.Note.created_at:type_name -> google.protobuf.Timestamp
+	4, // 1: api.notes.v1.Note.updated_at:type_name -> google.protobuf.Timestamp
 	2, // 2: api.notes.v1.NoteList.notes:type_name -> api.notes.v1.Note
-	1, // 3: api.notes.v1.NoteAPI.CreateNote:input_type -> api.notes.v1.NoteCreateRequest
-	0, // 4: api.notes.v1.NoteAPI.GetNoteByID:input_type -> api.notes.v1.NoteIDRequest
-	5, // 5: api.notes.v1.NoteAPI.GetNotes:input_type -> google.protobuf.Empty
-	0, // 6: api.notes.v1.NoteAPI.DeleteNoteByID:input_type -> api.notes.v1.NoteIDRequest
-	2, // 7: api.notes.v1.NoteAPI.CreateNote:output_type -> api.notes.v1.Note
-	2, // 8: api.notes.v1.NoteAPI.GetNoteByID:output_type -> api.notes.v1.Note
-	3, // 9: api.notes.v1.NoteAPI.GetNotes:output_type -> api.notes.v1.NoteList
-	2, // 10: api.notes.v1.NoteAPI.DeleteNoteByID:output_type -> api.notes.v1.Note
+	1, // 3: api.notes.v1.NoteAPI.Create:input_type -> api.notes.v1.NoteCreateRequest
+	0, // 4: api.notes.v1.NoteAPI.GetByID:input_type -> api.notes.v1.NoteIDRequest
+	5, // 5: api.notes.v1.NoteAPI.GetMulti:input_type -> google.protobuf.Empty
+	0, // 6: api.notes.v1.NoteAPI.DeleteByID:input_type -> api.notes.v1.NoteIDRequest
+	2, // 7: api.notes.v1.NoteAPI.Create:output_type -> api.notes.v1.Note
+	2, // 8: api.notes.v1.NoteAPI.GetByID:output_type -> api.notes.v1.Note
+	3, // 9: api.notes.v1.NoteAPI.GetMulti:output_type -> api.notes.v1.NoteList
+	2, // 10: api.notes.v1.NoteAPI.DeleteByID:output_type -> api.notes.v1.Note
 	7, // [7:11] is the sub-list for method output_type
 	3, // [3:7] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name

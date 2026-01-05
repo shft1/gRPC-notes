@@ -8,7 +8,7 @@ import (
 	"github.com/shft1/grpc-notes/internal/domain/notes"
 )
 
-func (r *repository) DeleteByID(_ context.Context, id uuid.UUID) (*notes.Note, error) {
+func (r *noteRepository) DeleteByID(_ context.Context, id uuid.UUID) (*notes.Note, error) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 

@@ -20,10 +20,10 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	NoteAPI_CreateNote_FullMethodName     = "/api.notes.v1.NoteAPI/CreateNote"
-	NoteAPI_GetNoteByID_FullMethodName    = "/api.notes.v1.NoteAPI/GetNoteByID"
-	NoteAPI_GetNotes_FullMethodName       = "/api.notes.v1.NoteAPI/GetNotes"
-	NoteAPI_DeleteNoteByID_FullMethodName = "/api.notes.v1.NoteAPI/DeleteNoteByID"
+	NoteAPI_Create_FullMethodName     = "/api.notes.v1.NoteAPI/Create"
+	NoteAPI_GetByID_FullMethodName    = "/api.notes.v1.NoteAPI/GetByID"
+	NoteAPI_GetMulti_FullMethodName   = "/api.notes.v1.NoteAPI/GetMulti"
+	NoteAPI_DeleteByID_FullMethodName = "/api.notes.v1.NoteAPI/DeleteByID"
 )
 
 // NoteAPIClient is the client API for NoteAPI service.
@@ -32,14 +32,14 @@ const (
 //
 // NoteAPI - сервис заметок
 type NoteAPIClient interface {
-	// CreateNote - создание заметки
-	CreateNote(ctx context.Context, in *NoteCreateRequest, opts ...grpc.CallOption) (*Note, error)
-	// GetNoteByID - получение заметки по ID
-	GetNoteByID(ctx context.Context, in *NoteIDRequest, opts ...grpc.CallOption) (*Note, error)
-	// GetNotes - получение всех заметок
-	GetNotes(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*NoteList, error)
-	// DeleteNoteByID - удалить заметку
-	DeleteNoteByID(ctx context.Context, in *NoteIDRequest, opts ...grpc.CallOption) (*Note, error)
+	// Create - создание заметки
+	Create(ctx context.Context, in *NoteCreateRequest, opts ...grpc.CallOption) (*Note, error)
+	// GetByID - получение заметки по ID
+	GetByID(ctx context.Context, in *NoteIDRequest, opts ...grpc.CallOption) (*Note, error)
+	// GetMulti - получение всех заметок
+	GetMulti(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*NoteList, error)
+	// DeleteByID - удалить заметку
+	DeleteByID(ctx context.Context, in *NoteIDRequest, opts ...grpc.CallOption) (*Note, error)
 }
 
 type noteAPIClient struct {
@@ -50,40 +50,40 @@ func NewNoteAPIClient(cc grpc.ClientConnInterface) NoteAPIClient {
 	return &noteAPIClient{cc}
 }
 
-func (c *noteAPIClient) CreateNote(ctx context.Context, in *NoteCreateRequest, opts ...grpc.CallOption) (*Note, error) {
+func (c *noteAPIClient) Create(ctx context.Context, in *NoteCreateRequest, opts ...grpc.CallOption) (*Note, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Note)
-	err := c.cc.Invoke(ctx, NoteAPI_CreateNote_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, NoteAPI_Create_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *noteAPIClient) GetNoteByID(ctx context.Context, in *NoteIDRequest, opts ...grpc.CallOption) (*Note, error) {
+func (c *noteAPIClient) GetByID(ctx context.Context, in *NoteIDRequest, opts ...grpc.CallOption) (*Note, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Note)
-	err := c.cc.Invoke(ctx, NoteAPI_GetNoteByID_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, NoteAPI_GetByID_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *noteAPIClient) GetNotes(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*NoteList, error) {
+func (c *noteAPIClient) GetMulti(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*NoteList, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(NoteList)
-	err := c.cc.Invoke(ctx, NoteAPI_GetNotes_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, NoteAPI_GetMulti_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *noteAPIClient) DeleteNoteByID(ctx context.Context, in *NoteIDRequest, opts ...grpc.CallOption) (*Note, error) {
+func (c *noteAPIClient) DeleteByID(ctx context.Context, in *NoteIDRequest, opts ...grpc.CallOption) (*Note, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Note)
-	err := c.cc.Invoke(ctx, NoteAPI_DeleteNoteByID_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, NoteAPI_DeleteByID_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -96,14 +96,14 @@ func (c *noteAPIClient) DeleteNoteByID(ctx context.Context, in *NoteIDRequest, o
 //
 // NoteAPI - сервис заметок
 type NoteAPIServer interface {
-	// CreateNote - создание заметки
-	CreateNote(context.Context, *NoteCreateRequest) (*Note, error)
-	// GetNoteByID - получение заметки по ID
-	GetNoteByID(context.Context, *NoteIDRequest) (*Note, error)
-	// GetNotes - получение всех заметок
-	GetNotes(context.Context, *emptypb.Empty) (*NoteList, error)
-	// DeleteNoteByID - удалить заметку
-	DeleteNoteByID(context.Context, *NoteIDRequest) (*Note, error)
+	// Create - создание заметки
+	Create(context.Context, *NoteCreateRequest) (*Note, error)
+	// GetByID - получение заметки по ID
+	GetByID(context.Context, *NoteIDRequest) (*Note, error)
+	// GetMulti - получение всех заметок
+	GetMulti(context.Context, *emptypb.Empty) (*NoteList, error)
+	// DeleteByID - удалить заметку
+	DeleteByID(context.Context, *NoteIDRequest) (*Note, error)
 	mustEmbedUnimplementedNoteAPIServer()
 }
 
@@ -114,17 +114,17 @@ type NoteAPIServer interface {
 // pointer dereference when methods are called.
 type UnimplementedNoteAPIServer struct{}
 
-func (UnimplementedNoteAPIServer) CreateNote(context.Context, *NoteCreateRequest) (*Note, error) {
-	return nil, status.Error(codes.Unimplemented, "method CreateNote not implemented")
+func (UnimplementedNoteAPIServer) Create(context.Context, *NoteCreateRequest) (*Note, error) {
+	return nil, status.Error(codes.Unimplemented, "method Create not implemented")
 }
-func (UnimplementedNoteAPIServer) GetNoteByID(context.Context, *NoteIDRequest) (*Note, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetNoteByID not implemented")
+func (UnimplementedNoteAPIServer) GetByID(context.Context, *NoteIDRequest) (*Note, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetByID not implemented")
 }
-func (UnimplementedNoteAPIServer) GetNotes(context.Context, *emptypb.Empty) (*NoteList, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetNotes not implemented")
+func (UnimplementedNoteAPIServer) GetMulti(context.Context, *emptypb.Empty) (*NoteList, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetMulti not implemented")
 }
-func (UnimplementedNoteAPIServer) DeleteNoteByID(context.Context, *NoteIDRequest) (*Note, error) {
-	return nil, status.Error(codes.Unimplemented, "method DeleteNoteByID not implemented")
+func (UnimplementedNoteAPIServer) DeleteByID(context.Context, *NoteIDRequest) (*Note, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeleteByID not implemented")
 }
 func (UnimplementedNoteAPIServer) mustEmbedUnimplementedNoteAPIServer() {}
 func (UnimplementedNoteAPIServer) testEmbeddedByValue()                 {}
@@ -147,74 +147,74 @@ func RegisterNoteAPIServer(s grpc.ServiceRegistrar, srv NoteAPIServer) {
 	s.RegisterService(&NoteAPI_ServiceDesc, srv)
 }
 
-func _NoteAPI_CreateNote_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _NoteAPI_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(NoteCreateRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(NoteAPIServer).CreateNote(ctx, in)
+		return srv.(NoteAPIServer).Create(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: NoteAPI_CreateNote_FullMethodName,
+		FullMethod: NoteAPI_Create_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NoteAPIServer).CreateNote(ctx, req.(*NoteCreateRequest))
+		return srv.(NoteAPIServer).Create(ctx, req.(*NoteCreateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _NoteAPI_GetNoteByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _NoteAPI_GetByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(NoteIDRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(NoteAPIServer).GetNoteByID(ctx, in)
+		return srv.(NoteAPIServer).GetByID(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: NoteAPI_GetNoteByID_FullMethodName,
+		FullMethod: NoteAPI_GetByID_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NoteAPIServer).GetNoteByID(ctx, req.(*NoteIDRequest))
+		return srv.(NoteAPIServer).GetByID(ctx, req.(*NoteIDRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _NoteAPI_GetNotes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _NoteAPI_GetMulti_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(emptypb.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(NoteAPIServer).GetNotes(ctx, in)
+		return srv.(NoteAPIServer).GetMulti(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: NoteAPI_GetNotes_FullMethodName,
+		FullMethod: NoteAPI_GetMulti_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NoteAPIServer).GetNotes(ctx, req.(*emptypb.Empty))
+		return srv.(NoteAPIServer).GetMulti(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _NoteAPI_DeleteNoteByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _NoteAPI_DeleteByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(NoteIDRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(NoteAPIServer).DeleteNoteByID(ctx, in)
+		return srv.(NoteAPIServer).DeleteByID(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: NoteAPI_DeleteNoteByID_FullMethodName,
+		FullMethod: NoteAPI_DeleteByID_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NoteAPIServer).DeleteNoteByID(ctx, req.(*NoteIDRequest))
+		return srv.(NoteAPIServer).DeleteByID(ctx, req.(*NoteIDRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -227,20 +227,20 @@ var NoteAPI_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*NoteAPIServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "CreateNote",
-			Handler:    _NoteAPI_CreateNote_Handler,
+			MethodName: "Create",
+			Handler:    _NoteAPI_Create_Handler,
 		},
 		{
-			MethodName: "GetNoteByID",
-			Handler:    _NoteAPI_GetNoteByID_Handler,
+			MethodName: "GetByID",
+			Handler:    _NoteAPI_GetByID_Handler,
 		},
 		{
-			MethodName: "GetNotes",
-			Handler:    _NoteAPI_GetNotes_Handler,
+			MethodName: "GetMulti",
+			Handler:    _NoteAPI_GetMulti_Handler,
 		},
 		{
-			MethodName: "DeleteNoteByID",
-			Handler:    _NoteAPI_DeleteNoteByID_Handler,
+			MethodName: "DeleteByID",
+			Handler:    _NoteAPI_DeleteByID_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

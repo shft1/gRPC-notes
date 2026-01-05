@@ -7,7 +7,7 @@ import (
 	"github.com/shft1/grpc-notes/internal/domain/notes"
 )
 
-func (r *repository) GetByID(_ context.Context, id uuid.UUID) (*notes.Note, error) {
+func (r *noteRepository) GetByID(_ context.Context, id uuid.UUID) (*notes.Note, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 
@@ -21,7 +21,7 @@ func (r *repository) GetByID(_ context.Context, id uuid.UUID) (*notes.Note, erro
 	return rowToDomain(row), nil
 }
 
-func (r *repository) GetMulti(_ context.Context) ([]*notes.Note, error) {
+func (r *noteRepository) GetMulti(_ context.Context) ([]*notes.Note, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 

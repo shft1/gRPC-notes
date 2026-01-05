@@ -7,7 +7,7 @@ import (
 	"github.com/shft1/grpc-notes/internal/domain/notes"
 )
 
-func (uc *useCase) DeleteByID(ctx context.Context, id uuid.UUID) (*notes.Note, error) {
+func (uc *noteUsecase) DeleteByID(ctx context.Context, id uuid.UUID) (*notes.Note, error) {
 	note, err := uc.repo.DeleteByID(ctx, id)
 	if err != nil {
 		return nil, err

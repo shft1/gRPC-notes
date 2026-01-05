@@ -3,8 +3,7 @@ syntax = "proto3";
 package api.notes.v1;
 
 import "google/protobuf/empty.proto";
-
-import "google/type/datetime.proto";
+import "google/protobuf/timestamp.proto";
 
 option go_package = "github.com/shft1/grpc-notes/pkg/api/notes/v1";
 
@@ -25,8 +24,8 @@ message Note {
   string title = 2;
   string desc = 3;
   bool is_del = 4;
-  google.type.DateTime created_at = 5;
-  google.type.DateTime updated_at = 6;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
 }
 
 // NoteList - сообщение списка заметок
@@ -36,15 +35,15 @@ message NoteList {
 
 // NoteAPI - сервис заметок
 service NoteAPI {
-  // CreateNote - создание заметки
-  rpc CreateNote(NoteCreateRequest) returns(Note) {};
+  // Create - создание заметки
+  rpc Create(NoteCreateRequest) returns(Note) {};
 
-  // GetNoteByID - получение заметки по ID
-  rpc GetNoteByID(NoteIDRequest) returns(Note) {};
+  // GetByID - получение заметки по ID
+  rpc GetByID(NoteIDRequest) returns(Note) {};
 
-  // GetNotes - получение всех заметок
-  rpc GetNotes(google.protobuf.Empty) returns(NoteList) {};
+  // GetMulti - получение всех заметок
+  rpc GetMulti(google.protobuf.Empty) returns(NoteList) {};
 
-  // DeleteNoteByID - удалить заметку
-  rpc DeleteNoteByID(NoteIDRequest) returns(Note) {};
+  // DeleteByID - удалить заметку
+  rpc DeleteByID(NoteIDRequest) returns(Note) {};
 }
