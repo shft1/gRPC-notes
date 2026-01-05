@@ -8,23 +8,23 @@ import (
 	"github.com/shft1/grpc-notes/internal/domain/notes"
 )
 
-func (nr *noteRepository) Create(_ context.Context, n *notes.NoteCreate) (*notes.Note, error) {
-	nr.mu.Lock()
-	defer nr.mu.Unlock()
+func (r *repository) Create(_ context.Context, n *notes.NoteCreate) (*notes.Note, error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
 
-	id := nr.genUUID()
+	id := r.genUUID()
 	createdAt := time.Now()
 	noteRow := domainToRow(id, createdAt, n)
-	nr.noteDB[id] = noteRow
+	r.noteDB[id] = noteRow
 	return rowToDomain(noteRow), nil
 }
 
-func (nr *noteRepository) genUUID() uuid.UUID {
+func (r *repository) genUUID() uuid.UUID {
 	id := uuid.New()
-	_, ok := nr.noteDB[id]
+	_, ok := r.noteDB[id]
 	for ok {
 		id = uuid.New()
-		_, ok = nr.noteDB[id]
+		_, ok = r.noteDB[id]
 	}
 	return id
 }

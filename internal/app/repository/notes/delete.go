@@ -8,11 +8,11 @@ import (
 	"github.com/shft1/grpc-notes/internal/domain/notes"
 )
 
-func (nr *noteRepository) DeleteByID(_ context.Context, uuid uuid.UUID) (*notes.Note, error) {
-	nr.mu.Lock()
-	defer nr.mu.Unlock()
+func (r *repository) DeleteByID(_ context.Context, id uuid.UUID) (*notes.Note, error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
 
-	row, ok := nr.noteDB[uuid]
+	row, ok := r.noteDB[id]
 	switch {
 	case !ok:
 		return nil, notes.ErrNotFound

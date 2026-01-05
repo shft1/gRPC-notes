@@ -6,11 +6,11 @@ import (
 	"github.com/google/uuid"
 )
 
-type noteRepository struct {
+type repository struct {
 	mu     sync.RWMutex
 	noteDB map[uuid.UUID]*noteRow
 }
 
-func NewNoteRepository() *noteRepository {
-	return &noteRepository{noteDB: make(map[uuid.UUID]*noteRow)}
+func NewNoteRepository() *repository {
+	return &repository{noteDB: make(map[uuid.UUID]*noteRow)}
 }
