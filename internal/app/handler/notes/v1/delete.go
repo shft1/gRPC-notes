@@ -11,11 +11,11 @@ import (
 func (h *NoteHandler) DeleteByID(ctx context.Context, req *pb.NoteIDRequest) (*pb.Note, error) {
 	id, err := uuid.Parse(req.GetUuid())
 	if err != nil || id == uuid.Nil {
-		return nil, mapError(notes.ErrInvalidUUID)
+		return nil, mapError(h.log, notes.ErrInvalidUUID)
 	}
 	note, err := h.noteUsecase.DeleteByID(ctx, id)
 	if err != nil {
-		return nil, mapError(err)
+		return nil, mapError(h.log, err)
 	}
 	return toDTOResponse(note), nil
 }

@@ -12,11 +12,11 @@ import (
 func (h *NoteHandler) Create(ctx context.Context, req *pb.NoteCreateRequest) (*pb.Note, error) {
 	req = h.normalizeCreateReq(req)
 	if err := h.validateCreateReq(req); err != nil {
-		return nil, mapError(err)
+		return nil, mapError(h.log, err)
 	}
 	note, err := h.noteUsecase.Create(ctx, toDomainCreate(req))
 	if err != nil {
-		return nil, mapError(err)
+		return nil, mapError(h.log, err)
 	}
 	return toDTOResponse(note), nil
 }

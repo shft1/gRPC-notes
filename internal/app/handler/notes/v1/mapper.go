@@ -4,11 +4,12 @@ import (
 	"errors"
 
 	"github.com/shft1/grpc-notes/internal/domain/notes"
+	"github.com/shft1/grpc-notes/observability/logger"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
-func mapError(err error) error {
+func mapError(log logger.Logger, err error) error {
 	switch {
 	case errors.Is(err, notes.ErrNotFound):
 		return status.Error(codes.NotFound, err.Error())
@@ -20,6 +21,7 @@ func mapError(err error) error {
 		errors.Is(err, notes.ErrInvalidUUID):
 		return status.Error(codes.InvalidArgument, err.Error())
 	default:
+		log.Error("unknown service error", logger.NewField("error", err))
 		return status.Error(codes.Internal, notes.ErrInternal.Error())
 	}
 }
