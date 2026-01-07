@@ -2,19 +2,23 @@ package server
 
 import (
 	"context"
+	"errors"
 	"net"
 	"time"
 
 	"github.com/shft1/grpc-notes/observability/logger"
+	"google.golang.org/grpc"
 )
 
 func (gs *grpcServer) StartGracefully(ctx context.Context, log logger.Logger, lis net.Listener) {
 	go func() {
-		if err := gs.srv.Serve(lis); err != nil {
-			log.Warn("grpc-server has been stopped", logger.NewField("error", err))
+		if err := gs.srv.Serve(lis); errors.Is(err, grpc.ErrServerStopped) {
+			log.Warn("request to a closed grpc-server")
+		} else {
+			log.Info("grpc-server has been stopped")
 		}
 	}()
-
+	log.Info("grpc-server is running")
 	<-ctx.Done()
 	log.Info("stopping server gracefully...")
 
@@ -22,7 +26,6 @@ func (gs *grpcServer) StartGracefully(ctx context.Context, log logger.Logger, li
 	defer cancel()
 
 	done := make(chan struct{})
-	defer close(done)
 
 	go func() {
 		gs.srv.GracefulStop()

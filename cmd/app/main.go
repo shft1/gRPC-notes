@@ -12,6 +12,8 @@ import (
 	"github.com/shft1/grpc-notes/internal/app/server"
 	noteUcase "github.com/shft1/grpc-notes/internal/app/usecase/notes"
 	"github.com/shft1/grpc-notes/observability/logger"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
@@ -25,6 +27,9 @@ func main() {
 	}
 	defer zlog.Sync()
 
+	if err := godotenv.Load(); err != nil {
+		zlog.Warn(".env file not found")
+	}
 	cfg := config.SetupAppEnv(zlog)
 
 	noteRepo := noteRepo.NewNoteRepository(zlog)

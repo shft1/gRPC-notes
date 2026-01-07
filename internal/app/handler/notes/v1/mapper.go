@@ -22,6 +22,6 @@ func mapError(log logger.Logger, err error) error {
 		return status.Error(codes.InvalidArgument, err.Error())
 	default:
 		log.Error("unknown service error", logger.NewField("error", err))
-		return status.Error(codes.Internal, notes.ErrInternal.Error())
+		return status.Error(codes.Internal, notes.ErrNoteInternal.Error())
 	}
 }
