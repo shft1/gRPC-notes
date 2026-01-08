@@ -9,7 +9,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
-func (h *NoteHandler) GetByID(ctx context.Context, req *pb.NoteIDRequest) (*pb.Note, error) {
+func (h *noteHandler) GetByID(ctx context.Context, req *pb.NoteIDRequest) (*pb.Note, error) {
 	id, err := uuid.Parse(req.GetUuid())
 	if err != nil || id == uuid.Nil {
 		return nil, mapError(h.log, notes.ErrInvalidUUID)
@@ -21,7 +21,7 @@ func (h *NoteHandler) GetByID(ctx context.Context, req *pb.NoteIDRequest) (*pb.N
 	return toDTOResponse(note), nil
 }
 
-func (h *NoteHandler) GetMulti(ctx context.Context, _ *emptypb.Empty) (*pb.NoteList, error) {
+func (h *noteHandler) GetMulti(ctx context.Context, _ *emptypb.Empty) (*pb.NoteList, error) {
 	notes, err := h.noteUsecase.GetMulti(ctx)
 	if err != nil {
 		return nil, mapError(h.log, err)

@@ -28,7 +28,7 @@ func mapErrorRPC(log logger.Logger, st *status.Status) error {
 
 func mapError(log logger.Logger, err error) error {
 	switch {
-	case errors.Is(err, notes.ErrNoteReponse):
+	case errors.Is(err, notes.ErrNoteResponse):
 		return err
 	default:
 		log.Error("unknown error from client service", logger.NewField("error", err))

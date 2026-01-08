@@ -12,8 +12,12 @@ import (
 
 func (gw *noteGateway) GetByID(ctx context.Context, id uuid.UUID) (*notes.Note, error) {
 	out, err := gw.client.GetByID(ctx, &pb.NoteIDRequest{Uuid: id.String()})
-	if st, ok := status.FromError(err); err != nil && ok {
-		return nil, mapErrorRPC(gw.log, st)
+	if err != nil {
+		if st, ok := status.FromError(err); ok {
+			return nil, mapErrorRPC(gw.log, st)
+		} else {
+			return nil, mapError(gw.log, err)
+		}
 	}
 	note, err := toDomainResponse(out)
 	if err != nil {
@@ -24,8 +28,12 @@ func (gw *noteGateway) GetByID(ctx context.Context, id uuid.UUID) (*notes.Note, 
 
 func (gw *noteGateway) GetMulti(ctx context.Context) ([]*notes.Note, error) {
 	out, err := gw.client.GetMulti(ctx, &emptypb.Empty{})
-	if st, ok := status.FromError(err); err != nil && ok {
-		return nil, mapErrorRPC(gw.log, st)
+	if err != nil {
+		if st, ok := status.FromError(err); ok {
+			return nil, mapErrorRPC(gw.log, st)
+		} else {
+			return nil, mapError(gw.log, err)
+		}
 	}
 	notes, err := toDomainListResponse(out.Notes)
 	if err != nil {

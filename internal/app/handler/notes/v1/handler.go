@@ -5,14 +5,14 @@ import (
 	pb "github.com/shft1/grpc-notes/pkg/api/notes/v1"
 )
 
-type NoteHandler struct {
+type noteHandler struct {
 	pb.UnimplementedNoteAPIServer
 	log         logger.Logger
 	noteUsecase noteUsecase
 }
 
-func NewNoteHandler(log logger.Logger, noteUsecase noteUsecase) *NoteHandler {
-	return &NoteHandler{
+func NewNoteHandler(log logger.Logger, noteUsecase noteUsecase) *noteHandler {
+	return &noteHandler{
 		log:         log,
 		noteUsecase: noteUsecase,
 	}

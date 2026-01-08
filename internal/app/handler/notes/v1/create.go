@@ -9,8 +9,9 @@ import (
 	pb "github.com/shft1/grpc-notes/pkg/api/notes/v1"
 )
 
-func (h *NoteHandler) Create(ctx context.Context, req *pb.NoteCreateRequest) (*pb.Note, error) {
-	req = h.normalizeCreateReq(req)
+func (h *noteHandler) Create(ctx context.Context, req *pb.NoteCreateRequest) (*pb.Note, error) {
+	h.normalizeCreateReq(req)
+
 	if err := h.validateCreateReq(req); err != nil {
 		return nil, mapError(h.log, err)
 	}
@@ -21,14 +22,12 @@ func (h *NoteHandler) Create(ctx context.Context, req *pb.NoteCreateRequest) (*p
 	return toDTOResponse(note), nil
 }
 
-func (h *NoteHandler) normalizeCreateReq(req *pb.NoteCreateRequest) *pb.NoteCreateRequest {
-	return &pb.NoteCreateRequest{
-		Title: strings.TrimSpace(req.Title),
-		Desc:  strings.TrimSpace(req.Desc),
-	}
+func (h *noteHandler) normalizeCreateReq(req *pb.NoteCreateRequest) {
+	req.Title = strings.TrimSpace(req.Title)
+	req.Desc = strings.TrimSpace(req.Desc)
 }
 
-func (h *NoteHandler) validateCreateReq(req *pb.NoteCreateRequest) error {
+func (h *noteHandler) validateCreateReq(req *pb.NoteCreateRequest) error {
 	lenTitle := utf8.RuneCountInString(req.Title)
 	lenDesc := utf8.RuneCountInString(req.Desc)
 	switch {
