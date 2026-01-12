@@ -16,7 +16,5 @@ func SetupAppEnv(log logger.Logger) *AppEnv {
 		log.Info("port variable is not found; the default value is 50051")
 		port = "50051"
 	}
-	return &AppEnv{
-		PortGRPC: port,
-	}
+	return &AppEnv{PortGRPC: port}
 }

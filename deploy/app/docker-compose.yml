@@ -1,0 +1,16 @@
+services:
+  service-notes:
+    build:
+      context: ../../
+      dockerfile: deploy/app/Dockerfile
+    container_name: service-notes
+    env_file:
+      - .env
+    ports:
+      - "${GRPC_PORT}:${GRPC_PORT}"
+    networks:
+      - server-default
+
+networks:
+  server-default:
+    name: server-default

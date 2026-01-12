@@ -6,21 +6,21 @@ import (
 	"net"
 	"time"
 
-	"github.com/shft1/grpc-notes/observability/logger"
 	"google.golang.org/grpc"
 )
 
-func (gs *grpcServer) StartGracefully(ctx context.Context, log logger.Logger, lis net.Listener) {
+func (gs *grpcServer) StartGracefully(ctx context.Context, lis net.Listener) {
 	go func() {
 		if err := gs.srv.Serve(lis); errors.Is(err, grpc.ErrServerStopped) {
-			log.Warn("request to a closed grpc-server")
+			gs.log.Warn("request to a closed grpc-server")
 		} else {
-			log.Info("grpc-server has been stopped")
+			gs.log.Info("grpc-server has been stopped")
 		}
 	}()
-	log.Info("grpc-server is running")
+
+	gs.log.Info("grpc-server started")
 	<-ctx.Done()
-	log.Info("stopping server gracefully...")
+	gs.log.Info("stopping grpc-server gracefully...")
 
 	shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -34,12 +34,11 @@ func (gs *grpcServer) StartGracefully(ctx context.Context, log logger.Logger, li
 
 	select {
 	case <-done:
-		log.Info("server stopped gracefully")
+		gs.log.Info("server stopped gracefully")
 	case <-shutdownCtx.Done():
 		gs.srv.Stop()
-		log.Warn("server stopped forcibly")
+		gs.log.Warn("server stopped forcibly")
 	}
-
 	lis.Close()
-	log.Info("tcp connection closed")
+	gs.log.Info("tcp connection closed")
 }

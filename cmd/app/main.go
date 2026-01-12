@@ -42,6 +42,5 @@ func main() {
 		return
 	}
 	srv.RegisterRPC(noteHand)
-
-	srv.StartGracefully(sysCtx, zlog, lis)
+	srv.StartGracefully(sysCtx, lis)
 }

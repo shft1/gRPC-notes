@@ -9,6 +9,7 @@ import (
 )
 
 type grpcServer struct {
+	log logger.Logger
 	srv *grpc.Server
 }
 
@@ -18,6 +19,9 @@ func NewServer(log logger.Logger, cfg *config.AppEnv) (*grpcServer, net.Listener
 		log.Error("failed to listen tcp", logger.NewField("port", cfg.PortGRPC))
 		return nil, nil, err
 	}
-	return &grpcServer{srv: grpc.NewServer()}, lis, nil
+	return &grpcServer{
+		log: log,
+		srv: grpc.NewServer(),
+	}, lis, nil
 
 }

@@ -8,7 +8,7 @@ import (
 	"github.com/shft1/grpc-notes/internal/domain/notes"
 )
 
-func (nh *noteHandler) DeleteByID(w http.ResponseWriter, r *http.Request) {
+func (nh *NoteHandler) DeleteByID(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	id, err := uuid.Parse(chi.URLParam(r, "uuid"))

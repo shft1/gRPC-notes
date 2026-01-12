@@ -22,3 +22,15 @@ lint:
 breaking:
 	$(info backwarding compatibility...)
 	@$(LOCAL_BIN)/easyp breaking --against main --path api
+
+run:
+	$(info running service-notes...)
+	docker compose -f deploy/app/docker-compose.yml up --build -d
+	$(info running service-client...)
+	docker compose -f deploy/client/docker-compose.yml up --build -d
+
+down:
+	$(info stopping service-client...)
+	docker compose -f deploy/client/docker-compose.yml down
+	$(info stopping service-notes...)
+	docker compose -f deploy/app/docker-compose.yml down

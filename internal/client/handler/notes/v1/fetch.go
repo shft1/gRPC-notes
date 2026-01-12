@@ -8,7 +8,7 @@ import (
 	"github.com/shft1/grpc-notes/internal/domain/notes"
 )
 
-func (nh *noteHandler) GetByID(w http.ResponseWriter, r *http.Request) {
+func (nh *NoteHandler) GetByID(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	id, err := uuid.Parse(chi.URLParam(r, "uuid"))
@@ -24,7 +24,7 @@ func (nh *noteHandler) GetByID(w http.ResponseWriter, r *http.Request) {
 	writeResponse(nh.log, w, http.StatusOK, toDTOResponse(note), nil)
 }
 
-func (nh *noteHandler) GetMulti(w http.ResponseWriter, r *http.Request) {
+func (nh *NoteHandler) GetMulti(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	notes, err := nh.noteGW.GetMulti(ctx)

@@ -1,0 +1,16 @@
+services:
+  service-client:
+    build:
+      context: ../../
+      dockerfile: deploy/client/Dockerfile
+    container_name: service-client
+    env_file:
+      - .env
+    ports:
+      - "${CLIENT_PORT}:${CLIENT_PORT}"
+    networks:
+      - server-default
+
+networks:
+  server-default:
+    external: true

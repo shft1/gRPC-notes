@@ -2,13 +2,13 @@ package v1
 
 import "github.com/shft1/grpc-notes/observability/logger"
 
-type noteHandler struct {
+type NoteHandler struct {
 	log    logger.Logger
 	noteGW gateway
 }
 
-func NewNoteHandler(log logger.Logger, noteGW gateway) *noteHandler {
-	return &noteHandler{
+func NewNoteHandler(log logger.Logger, noteGW gateway) *NoteHandler {
+	return &NoteHandler{
 		log:    log,
 		noteGW: noteGW,
 	}

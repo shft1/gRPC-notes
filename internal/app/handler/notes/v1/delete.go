@@ -8,7 +8,7 @@ import (
 	pb "github.com/shft1/grpc-notes/pkg/api/notes/v1"
 )
 
-func (h *noteHandler) DeleteByID(ctx context.Context, req *pb.NoteIDRequest) (*pb.Note, error) {
+func (h *NoteHandler) DeleteByID(ctx context.Context, req *pb.NoteIDRequest) (*pb.Note, error) {
 	id, err := uuid.Parse(req.GetUuid())
 	if err != nil || id == uuid.Nil {
 		return nil, mapError(h.log, notes.ErrInvalidUUID)
