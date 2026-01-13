@@ -26,7 +26,7 @@ const (
 // NoteIDRequest - сообщение ID заметки
 type NoteIDRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Uuid          string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -61,9 +61,9 @@ func (*NoteIDRequest) Descriptor() ([]byte, []int) {
 	return file_api_notes_v1_notes_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *NoteIDRequest) GetUuid() string {
+func (x *NoteIDRequest) GetId() string {
 	if x != nil {
-		return x.Uuid
+		return x.Id
 	}
 	return ""
 }
@@ -124,7 +124,7 @@ func (x *NoteCreateRequest) GetDesc() string {
 // Note - сообщение заметки
 type Note struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Uuid          string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Title         string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
 	Desc          string                 `protobuf:"bytes,3,opt,name=desc,proto3" json:"desc,omitempty"`
 	IsDel         bool                   `protobuf:"varint,4,opt,name=is_del,json=isDel,proto3" json:"is_del,omitempty"`
@@ -164,9 +164,9 @@ func (*Note) Descriptor() ([]byte, []int) {
 	return file_api_notes_v1_notes_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *Note) GetUuid() string {
+func (x *Note) GetId() string {
 	if x != nil {
-		return x.Uuid
+		return x.Id
 	}
 	return ""
 }
@@ -255,14 +255,14 @@ var File_api_notes_v1_notes_proto protoreflect.FileDescriptor
 
 const file_api_notes_v1_notes_proto_rawDesc = "" +
 	"\n" +
-	"\x18api/notes/v1/notes.proto\x12\fapi.notes.v1\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"#\n" +
-	"\rNoteIDRequest\x12\x12\n" +
-	"\x04uuid\x18\x01 \x01(\tR\x04uuid\"=\n" +
+	"\x18api/notes/v1/notes.proto\x12\fapi.notes.v1\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x1f\n" +
+	"\rNoteIDRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"=\n" +
 	"\x11NoteCreateRequest\x12\x14\n" +
 	"\x05title\x18\x01 \x01(\tR\x05title\x12\x12\n" +
-	"\x04desc\x18\x02 \x01(\tR\x04desc\"\xd1\x01\n" +
-	"\x04Note\x12\x12\n" +
-	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x14\n" +
+	"\x04desc\x18\x02 \x01(\tR\x04desc\"\xcd\x01\n" +
+	"\x04Note\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12\x12\n" +
 	"\x04desc\x18\x03 \x01(\tR\x04desc\x12\x15\n" +
 	"\x06is_del\x18\x04 \x01(\bR\x05isDel\x129\n" +

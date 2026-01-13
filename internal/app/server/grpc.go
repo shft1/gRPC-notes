@@ -2,6 +2,7 @@ package server
 
 import (
 	"net"
+	"sync"
 
 	"github.com/shft1/grpc-notes/internal/app/config"
 	"github.com/shft1/grpc-notes/observability/logger"
@@ -9,6 +10,7 @@ import (
 )
 
 type grpcServer struct {
+	wg  sync.WaitGroup
 	log logger.Logger
 	srv *grpc.Server
 }

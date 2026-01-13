@@ -8,7 +8,7 @@ type noteCreateRequest struct {
 }
 
 type noteResponse struct {
-	UUID      string    `json:"uuid"`
+	ID        string    `json:"uuid"`
 	Title     string    `json:"title"`
 	Desc      string    `json:"description"`
 	IsDel     bool      `json:"is_delete"`

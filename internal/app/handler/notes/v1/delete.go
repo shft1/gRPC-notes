@@ -9,7 +9,7 @@ import (
 )
 
 func (h *NoteHandler) DeleteByID(ctx context.Context, req *pb.NoteIDRequest) (*pb.Note, error) {
-	id, err := uuid.Parse(req.GetUuid())
+	id, err := uuid.Parse(req.GetId())
 	if err != nil || id == uuid.Nil {
 		return nil, mapError(h.log, notes.ErrInvalidUUID)
 	}

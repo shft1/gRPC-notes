@@ -15,7 +15,7 @@ func toDomainCreate(in *pb.NoteCreateRequest) *notes.NoteCreate {
 
 func toDTOResponse(item *notes.Note) *pb.Note {
 	return &pb.Note{
-		Uuid:      item.UUID.String(),
+		Id:      item.ID.String(),
 		Title:     item.Title,
 		Desc:      item.Desc,
 		IsDel:     item.IsDel,

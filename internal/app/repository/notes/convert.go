@@ -9,7 +9,7 @@ import (
 
 func domainToRow(id uuid.UUID, createdAt time.Time, n *notes.NoteCreate) *noteRow {
 	return &noteRow{
-		UUID:      id,
+		ID:        id,
 		Title:     n.Title,
 		Desc:      n.Desc,
 		CreatedAt: createdAt,
@@ -19,7 +19,7 @@ func domainToRow(id uuid.UUID, createdAt time.Time, n *notes.NoteCreate) *noteRo
 
 func rowToDomain(row *noteRow) *notes.Note {
 	return &notes.Note{
-		UUID:      row.UUID,
+		ID:        row.ID,
 		Title:     row.Title,
 		Desc:      row.Desc,
 		IsDel:     row.IsDel,

@@ -14,12 +14,12 @@ func toDTORequest(in *notes.NoteCreate) *pb.NoteCreateRequest {
 }
 
 func toDomainResponse(in *pb.Note) (*notes.Note, error) {
-	id, err := uuid.Parse(in.Uuid)
+	id, err := uuid.Parse(in.Id)
 	if err != nil || in.CreatedAt == nil || in.UpdatedAt == nil {
 		return nil, notes.ErrNoteResponse
 	}
 	return &notes.Note{
-		UUID:      id,
+		ID:      id,
 		Title:     in.Title,
 		Desc:      in.Desc,
 		IsDel:     in.IsDel,

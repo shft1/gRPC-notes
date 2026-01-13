@@ -11,7 +11,7 @@ import (
 )
 
 func (gw *noteGateway) GetByID(ctx context.Context, id uuid.UUID) (*notes.Note, error) {
-	out, err := gw.client.GetByID(ctx, &pb.NoteIDRequest{Uuid: id.String()})
+	out, err := gw.client.GetByID(ctx, &pb.NoteIDRequest{Id: id.String()})
 	if err != nil {
 		if st, ok := status.FromError(err); ok {
 			return nil, mapErrorRPC(gw.log, st)

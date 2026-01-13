@@ -7,7 +7,7 @@ import (
 )
 
 type noteRow struct {
-	UUID      uuid.UUID
+	ID        uuid.UUID
 	Title     string
 	Desc      string
 	IsDel     bool
