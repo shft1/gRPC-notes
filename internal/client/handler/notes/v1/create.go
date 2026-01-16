@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -8,10 +9,14 @@ import (
 	"unicode/utf8"
 
 	"github.com/shft1/grpc-notes/internal/domain/notes"
+	"github.com/shft1/grpc-notes/shared"
 )
 
 func (nh *NoteHandler) Create(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
+	if token := r.Header.Get("Authorization"); token != "" {
+		ctx = context.WithValue(ctx, shared.AuthKey, token)
+	}
 	var noteReq noteCreateRequest
 
 	if err := json.NewDecoder(r.Body).Decode(&noteReq); err != nil {
@@ -42,9 +47,9 @@ func (nh *NoteHandler) validateCreate(noteReq *noteCreateRequest) error {
 	switch {
 	case lenTitle == 0:
 		return fmt.Errorf("%w: %w", notes.ErrInvalidData, notes.ErrEmptyTitle)
-	case lenTitle > 50:
+	case lenTitle >= 50:
 		return fmt.Errorf("%w: %w", notes.ErrInvalidData, notes.ErrTooLongTitle)
-	case lenDesc > 300:
+	case lenDesc >= 255:
 		return fmt.Errorf("%w: %w", notes.ErrInvalidData, notes.ErrTooLongDesc)
 	default:
 		return nil

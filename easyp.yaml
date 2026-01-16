@@ -26,6 +26,9 @@ lint:
   enum_zero_value_suffix: NONE
   service_suffix: API
 
+deps:
+  - github.com/bufbuild/protovalidate@v0.3.0
+
 generate:
     inputs:
       - directory: "api"

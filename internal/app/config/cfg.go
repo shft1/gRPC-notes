@@ -2,19 +2,33 @@ package config
 
 import (
 	"os"
+	"time"
 
 	"github.com/shft1/grpc-notes/observability/logger"
 )
 
-type AppEnv struct {
-	PortGRPC string
+type ServerEnv struct {
+	Port                  string
+	MaxConnectionIdle     time.Duration
+	MaxConnectionAge      time.Duration
+	MaxConnectionAgeGrace time.Duration
+	Time                  time.Duration
+	Timeout               time.Duration
 }
 
-func SetupAppEnv(log logger.Logger) *AppEnv {
+func SetupServerEnv(log logger.Logger) *ServerEnv {
 	port := os.Getenv("GRPC_PORT")
-	if port == "" {
-		log.Info("port variable is not found; the default value is 50051")
-		port = "50051"
+	idle, _ := time.ParseDuration(os.Getenv("MAX_CONNECTION_IDLE"))
+	age, _ := time.ParseDuration(os.Getenv("MAX_CONNECTION_AGE"))
+	grace, _ := time.ParseDuration(os.Getenv("MAX_CONNECTION_AGE_GRACE"))
+	tm, _ := time.ParseDuration(os.Getenv("TIME"))
+	tmout, _ := time.ParseDuration(os.Getenv("TIMEOUT"))
+	return &ServerEnv{
+		Port:                  port,
+		MaxConnectionIdle:     idle,
+		MaxConnectionAge:      age,
+		MaxConnectionAgeGrace: grace,
+		Time:                  tm,
+		Timeout:               tmout,
 	}
-	return &AppEnv{PortGRPC: port}
 }

@@ -2,36 +2,12 @@ syntax = "proto3";
 
 package api.notes.v1;
 
+option go_package = "github.com/shft1/grpc-notes/pkg/api/notes/v1";
+
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 
-option go_package = "github.com/shft1/grpc-notes/pkg/api/notes/v1";
-
-// NoteIDRequest - сообщение ID заметки
-message NoteIDRequest {
-  string id = 1;
-}
-
-// NoteCreateRequest - сообщение заметки для создания
-message NoteCreateRequest {
-  string title = 1;
-  string desc = 2;
-}
-
-// Note - сообщение заметки
-message Note {
-  string id = 1;
-  string title = 2;
-  string desc = 3;
-  bool is_del = 4;
-  google.protobuf.Timestamp created_at = 5;
-  google.protobuf.Timestamp updated_at = 6;
-}
-
-// NoteList - сообщение списка заметок
-message NoteList {
-  repeated Note notes = 1;
-}
+import "api/notes/v1/messages.proto";
 
 // NoteAPI - сервис заметок
 service NoteAPI {

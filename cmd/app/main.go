@@ -8,6 +8,7 @@ import (
 
 	"github.com/shft1/grpc-notes/internal/app/config"
 	noteHand "github.com/shft1/grpc-notes/internal/app/handler/notes/v1"
+	"github.com/shft1/grpc-notes/internal/app/middleware"
 	noteRepo "github.com/shft1/grpc-notes/internal/app/repository/notes"
 	"github.com/shft1/grpc-notes/internal/app/server"
 	noteUcase "github.com/shft1/grpc-notes/internal/app/usecase/notes"
@@ -30,13 +31,24 @@ func main() {
 	if err := godotenv.Load(); err != nil {
 		zlog.Warn(".env file not found")
 	}
-	cfg := config.SetupAppEnv(zlog)
+	cfg := config.SetupServerEnv(zlog)
 
 	noteRepo := noteRepo.NewNoteRepository(zlog)
 	noteUcase := noteUcase.NewNotesUseCase(zlog, noteRepo)
 	noteHand := noteHand.NewNoteHandler(zlog, noteUcase)
 
-	srv, lis, err := server.NewServer(zlog, cfg)
+	logInter := middleware.NewLoggerInterceptor(zlog)
+	authInter := middleware.NewAuthInterceptor()
+
+	srv, lis, err := server.NewServer(
+		zlog, logInter, authInter,
+		server.WithPort(cfg.Port),
+		server.WithMaxConnectionIdle(cfg.MaxConnectionIdle),
+		server.WithMaxConnectionAge(cfg.MaxConnectionAge),
+		server.WithMaxConnectionAgeGrace(cfg.MaxConnectionAgeGrace),
+		server.WithTime(cfg.Time),
+		server.WithTimeout(cfg.Timeout),
+	)
 	if err != nil {
 		zlog.Error("failed to create grpc-server", logger.NewField("error", err))
 		return

@@ -4,7 +4,6 @@ import (
 	"net"
 	"sync"
 
-	"github.com/shft1/grpc-notes/internal/app/config"
 	"github.com/shft1/grpc-notes/observability/logger"
 	"google.golang.org/grpc"
 )
@@ -15,15 +14,25 @@ type grpcServer struct {
 	srv *grpc.Server
 }
 
-func NewServer(log logger.Logger, cfg *config.AppEnv) (*grpcServer, net.Listener, error) {
-	lis, err := net.Listen("tcp", ":"+cfg.PortGRPC)
+func NewServer(log logger.Logger, logInter, authInter grpc.UnaryServerInterceptor, opts ...option) (*grpcServer, net.Listener, error) {
+	parameters := setupParameters(opts...)
+	lis, err := net.Listen("tcp", net.JoinHostPort("", parameters.port))
 	if err != nil {
-		log.Error("failed to listen tcp", logger.NewField("port", cfg.PortGRPC))
+		log.Error("failed to listen tcp", logger.NewField("port", parameters.port))
 		return nil, nil, err
 	}
-	return &grpcServer{
-		log: log,
-		srv: grpc.NewServer(),
-	}, lis, nil
-
+	srv := grpc.NewServer(
+		grpc.KeepaliveParams(parameters.ServerParameters),
+		grpc.ChainUnaryInterceptor(logInter, authInter),
+	)
+	log.Debug(
+		"server info",
+		logger.NewField("port", parameters.port),
+		logger.NewField("MaxConnectionIdle", parameters.MaxConnectionIdle),
+		logger.NewField("MaxConnectionAge", parameters.MaxConnectionAge),
+		logger.NewField("MaxConnectionAgeGrace", parameters.MaxConnectionAgeGrace),
+		logger.NewField("Time", parameters.Time),
+		logger.NewField("Timeout", parameters.Timeout),
+	)
+	return &grpcServer{log: log, srv: srv}, lis, nil
 }

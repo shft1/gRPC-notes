@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package api.notes.v1;
+
+option go_package = "github.com/shft1/grpc-notes/pkg/api/notes/v1";
+
+message ErrorDetails {
+    string detail = 1;
+}
