@@ -43,9 +43,12 @@ message Note {
     (buf.validate.field).string.max_len = 255
   ];
   bool is_del = 4;
-  google.protobuf.Timestamp created_at = 5;
-  google.protobuf.Timestamp updated_at = 6;
-
+  google.protobuf.Timestamp created_at = 5 [
+    (buf.validate.field).required = true
+  ];
+  google.protobuf.Timestamp updated_at = 6 [
+    (buf.validate.field).required = true
+  ];
   option (buf.validate.message).cel = {
     id: "time.logic"
     message: "the creation time must be earlier than the update time"

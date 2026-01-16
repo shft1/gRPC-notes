@@ -19,6 +19,8 @@ func mapError(log logger.Logger, err error) (int, string) {
 		return http.StatusBadRequest, err.Error()
 	case errors.Is(err, notes.ErrInvalidData):
 		return http.StatusBadRequest, err.Error()
+	case errors.Is(err, notes.ErrUnauthenticated):
+		return http.StatusUnauthorized, err.Error()
 	case errors.Is(err, notes.ErrNoteInternal) ||
 		errors.Is(err, notes.ErrNoteResponse) ||
 		errors.Is(err, notes.ErrClientInternal):

@@ -29,9 +29,7 @@ func mapError(log logger.Logger, err error) error {
 
 	default:
 		log.Error("unknown service error", logger.NewField("error", err))
-		detail := &pb.ErrorDetails{Detail: err.Error()}
-		st := withDetails(codes.Internal, notes.ErrNoteInternal.Error(), detail)
-		return st.Err()
+		return status.Error(codes.Internal, notes.ErrNoteInternal.Error())
 	}
 }
 

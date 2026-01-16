@@ -13,7 +13,7 @@ func NewAuthInterceptor() grpc.UnaryServerInterceptor {
 	return func(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (any, error) {
 		md, ok := metadata.FromIncomingContext(ctx)
 		if !ok {
-			return nil, status.Error(codes.InvalidArgument, "missing metadata")
+			return nil, status.Error(codes.Unauthenticated, "missing metadata")
 		}
 		token, ok := md["authorization"]
 		if !ok {

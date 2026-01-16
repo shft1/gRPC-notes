@@ -13,29 +13,22 @@ func toDTORequest(in *notes.NoteCreate) *pb.NoteCreateRequest {
 	}
 }
 
-func toDomainResponse(in *pb.Note) (*notes.Note, error) {
-	id, err := uuid.Parse(in.Id)
-	if err != nil || in.CreatedAt == nil || in.UpdatedAt == nil {
-		return nil, notes.ErrNoteResponse
-	}
+func toDomainResponse(in *pb.Note) *notes.Note {
+	id, _ := uuid.Parse(in.Id)
 	return &notes.Note{
-		ID:      id,
+		ID:        id,
 		Title:     in.Title,
 		Desc:      in.Desc,
 		IsDel:     in.IsDel,
 		CreatedAt: in.CreatedAt.AsTime(),
 		UpdatedAt: in.UpdatedAt.AsTime(),
-	}, nil
+	}
 }
 
-func toDomainListResponse(in []*pb.Note) ([]*notes.Note, error) {
+func toDomainListResponse(in []*pb.Note) []*notes.Note {
 	items := make([]*notes.Note, 0, len(in))
 	for _, dto := range in {
-		item, err := toDomainResponse(dto)
-		if err != nil {
-			return nil, err
-		}
-		items = append(items, item)
+		items = append(items, toDomainResponse(dto))
 	}
-	return items, nil
+	return items
 }

@@ -12,6 +12,7 @@ var (
 	ErrNoteInternal    = errors.New("internal error in note service")
 	ErrClientInternal  = errors.New("internal error in client service")
 	ErrInvalidData     = errors.New("invalid transmitted data")
+	ErrUnauthenticated = errors.New("not authenticated")
 	ErrNoteResponse    = errors.New("returned data from note service are not expected")
 	ErrServiceInternal = errors.New("internal service error")
 )

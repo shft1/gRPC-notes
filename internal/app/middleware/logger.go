@@ -20,12 +20,12 @@ func NewLoggerInterceptor(log logger.Logger) grpc.UnaryServerInterceptor {
 		if err != nil {
 			log.Warn("failed request",
 				logger.NewField("method", info.FullMethod),
-				logger.NewField("duration", duration),
+				logger.NewField("duration", duration.Milliseconds()),
 				logger.NewField("error", err))
 		} else {
 			log.Info("successfull request",
 				logger.NewField("method", info.FullMethod),
-				logger.NewField("duration", duration))
+				logger.NewField("duration", duration.Milliseconds()))
 		}
 		return resp, err
 	}
