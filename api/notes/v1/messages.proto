@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+package api.notes.v1;
+
+option go_package = "github.com/shft1/grpc-notes/pkg/api/notes/v1";
+
+import "google/protobuf/timestamp.proto";
+
+import "buf/validate/validate.proto";
+
+// NoteIDRequest - сообщение ID заметки
+message NoteIDRequest {
+  string id = 1 [
+    (buf.validate.field).string.uuid = true
+  ];
+}
+
+// NoteCreateRequest - сообщение заметки для создания
+message NoteCreateRequest {
+  string title = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 5,
+    (buf.validate.field).string.max_len = 25
+  ];
+  string desc = 2 [
+    (buf.validate.field).string.min_len = 10,
+    (buf.validate.field).string.max_len = 255
+  ];
+}
+
+// Note - сообщение заметки
+message Note {
+  string id = 1 [
+    (buf.validate.field).string.uuid = true
+  ];
+  string title = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 5,
+    (buf.validate.field).string.max_len = 25
+  ];
+  string desc = 3 [
+    (buf.validate.field).string.min_len = 10,
+    (buf.validate.field).string.max_len = 255
+  ];
+  bool is_del = 4;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
+
+  option (buf.validate.message).cel = {
+    id: "time.logic"
+    message: "the creation time must be earlier than the update time"
+    expression: "this.created_at <= this.updated_at"
+  };
+}
+
+// NoteList - сообщение списка заметок
+message NoteList {
+  repeated Note notes = 1 [
+    (buf.validate.field).required = true
+  ];
+}
