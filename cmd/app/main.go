@@ -8,7 +8,8 @@ import (
 
 	"github.com/shft1/grpc-notes/internal/app/config"
 	noteHand "github.com/shft1/grpc-notes/internal/app/handler/notes/v1"
-	"github.com/shft1/grpc-notes/internal/app/middleware"
+	"github.com/shft1/grpc-notes/internal/app/middleware/stream"
+	"github.com/shft1/grpc-notes/internal/app/middleware/unary"
 	noteRepo "github.com/shft1/grpc-notes/internal/app/repository/notes"
 	"github.com/shft1/grpc-notes/internal/app/server"
 	noteUcase "github.com/shft1/grpc-notes/internal/app/usecase/notes"
@@ -37,11 +38,13 @@ func main() {
 	noteUcase := noteUcase.NewNotesUseCase(zlog, noteRepo)
 	noteHand := noteHand.NewNoteHandler(zlog, noteUcase)
 
-	logInter := middleware.NewLoggerInterceptor(zlog)
-	authInter := middleware.NewAuthInterceptor()
+	logUnaryInter := unary.NewLoggerInterceptor(zlog)
+	authUnaryInter := unary.NewAuthInterceptor()
+
+	logStreamInter := stream.NewLoggerInterceptor(zlog)
 
 	srv, lis, err := server.NewServer(
-		zlog, logInter, authInter,
+		zlog, logUnaryInter, authUnaryInter, logStreamInter,
 		server.WithPort(cfg.Port),
 		server.WithMaxConnectionIdle(cfg.MaxConnectionIdle),
 		server.WithMaxConnectionAge(cfg.MaxConnectionAge),

@@ -251,6 +251,224 @@ func (x *NoteList) GetNotes() []*Note {
 	return nil
 }
 
+// NoteEvent - событие заметки
+type NoteEvent struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Title         string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *NoteEvent) Reset() {
+	*x = NoteEvent{}
+	mi := &file_api_notes_v1_messages_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *NoteEvent) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*NoteEvent) ProtoMessage() {}
+
+func (x *NoteEvent) ProtoReflect() protoreflect.Message {
+	mi := &file_api_notes_v1_messages_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use NoteEvent.ProtoReflect.Descriptor instead.
+func (*NoteEvent) Descriptor() ([]byte, []int) {
+	return file_api_notes_v1_messages_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *NoteEvent) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *NoteEvent) GetTitle() string {
+	if x != nil {
+		return x.Title
+	}
+	return ""
+}
+
+// Health - сообщение об установлении stream
+type Health struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Message       string                 `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Health) Reset() {
+	*x = Health{}
+	mi := &file_api_notes_v1_messages_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Health) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Health) ProtoMessage() {}
+
+func (x *Health) ProtoReflect() protoreflect.Message {
+	mi := &file_api_notes_v1_messages_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Health.ProtoReflect.Descriptor instead.
+func (*Health) Descriptor() ([]byte, []int) {
+	return file_api_notes_v1_messages_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *Health) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+// EventResponse - сообщение stream
+type EventResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Event:
+	//
+	//	*EventResponse_Note
+	//	*EventResponse_Health
+	Event         isEventResponse_Event `protobuf_oneof:"event"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *EventResponse) Reset() {
+	*x = EventResponse{}
+	mi := &file_api_notes_v1_messages_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EventResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EventResponse) ProtoMessage() {}
+
+func (x *EventResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_notes_v1_messages_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EventResponse.ProtoReflect.Descriptor instead.
+func (*EventResponse) Descriptor() ([]byte, []int) {
+	return file_api_notes_v1_messages_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *EventResponse) GetEvent() isEventResponse_Event {
+	if x != nil {
+		return x.Event
+	}
+	return nil
+}
+
+func (x *EventResponse) GetNote() *NoteEvent {
+	if x != nil {
+		if x, ok := x.Event.(*EventResponse_Note); ok {
+			return x.Note
+		}
+	}
+	return nil
+}
+
+func (x *EventResponse) GetHealth() *Health {
+	if x != nil {
+		if x, ok := x.Event.(*EventResponse_Health); ok {
+			return x.Health
+		}
+	}
+	return nil
+}
+
+type isEventResponse_Event interface {
+	isEventResponse_Event()
+}
+
+type EventResponse_Note struct {
+	Note *NoteEvent `protobuf:"bytes,1,opt,name=note,proto3,oneof"`
+}
+
+type EventResponse_Health struct {
+	Health *Health `protobuf:"bytes,2,opt,name=health,proto3,oneof"`
+}
+
+func (*EventResponse_Note) isEventResponse_Event() {}
+
+func (*EventResponse_Health) isEventResponse_Event() {}
+
+// Empty - сообщение на установление stream
+type Empty struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Empty) Reset() {
+	*x = Empty{}
+	mi := &file_api_notes_v1_messages_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Empty) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Empty) ProtoMessage() {}
+
+func (x *Empty) ProtoReflect() protoreflect.Message {
+	mi := &file_api_notes_v1_messages_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Empty.ProtoReflect.Descriptor instead.
+func (*Empty) Descriptor() ([]byte, []int) {
+	return file_api_notes_v1_messages_proto_rawDescGZIP(), []int{7}
+}
+
 var File_api_notes_v1_messages_proto protoreflect.FileDescriptor
 
 const file_api_notes_v1_messages_proto_rawDesc = "" +
@@ -262,22 +480,32 @@ const file_api_notes_v1_messages_proto_rawDesc = "" +
 	"\x05title\x18\x01 \x01(\tB\f\xbaH\t\xc8\x01\x01r\x04\x10\x05\x18\x19R\x05title\x12\x1e\n" +
 	"\x04desc\x18\x02 \x01(\tB\n" +
 	"\xbaH\ar\x05\x10\n" +
-	"\x18\xff\x01R\x04desc\"\xe0\x02\n" +
+	"\x18\xff\x01R\x04desc\"\xf0\x02\n" +
 	"\x04Note\x12\x18\n" +
 	"\x02id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\x12\"\n" +
 	"\x05title\x18\x02 \x01(\tB\f\xbaH\t\xc8\x01\x01r\x04\x10\x05\x18\x19R\x05title\x12\x1e\n" +
 	"\x04desc\x18\x03 \x01(\tB\n" +
 	"\xbaH\ar\x05\x10\n" +
 	"\x18\xff\x01R\x04desc\x12\x15\n" +
-	"\x06is_del\x18\x04 \x01(\bR\x05isDel\x129\n" +
+	"\x06is_del\x18\x04 \x01(\bR\x05isDel\x12A\n" +
 	"\n" +
-	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
+	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampB\x06\xbaH\x03\xc8\x01\x01R\tcreatedAt\x12A\n" +
 	"\n" +
-	"updated_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt:m\xbaHj\x1ah\n" +
+	"updated_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampB\x06\xbaH\x03\xc8\x01\x01R\tupdatedAt:m\xbaHj\x1ah\n" +
 	"\n" +
 	"time.logic\x126the creation time must be earlier than the update time\x1a\"this.created_at <= this.updated_at\"<\n" +
 	"\bNoteList\x120\n" +
-	"\x05notes\x18\x01 \x03(\v2\x12.api.notes.v1.NoteB\x06\xbaH\x03\xc8\x01\x01R\x05notesB.Z,github.com/shft1/grpc-notes/pkg/api/notes/v1b\x06proto3"
+	"\x05notes\x18\x01 \x03(\v2\x12.api.notes.v1.NoteB\x06\xbaH\x03\xc8\x01\x01R\x05notes\"I\n" +
+	"\tNoteEvent\x12\x18\n" +
+	"\x02id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\x12\"\n" +
+	"\x05title\x18\x02 \x01(\tB\f\xbaH\t\xc8\x01\x01r\x04\x10\x05\x18\x19R\x05title\"\"\n" +
+	"\x06Health\x12\x18\n" +
+	"\amessage\x18\x01 \x01(\tR\amessage\"w\n" +
+	"\rEventResponse\x12-\n" +
+	"\x04note\x18\x01 \x01(\v2\x17.api.notes.v1.NoteEventH\x00R\x04note\x12.\n" +
+	"\x06health\x18\x02 \x01(\v2\x14.api.notes.v1.HealthH\x00R\x06healthB\a\n" +
+	"\x05event\"\a\n" +
+	"\x05EmptyB.Z,github.com/shft1/grpc-notes/pkg/api/notes/v1b\x06proto3"
 
 var (
 	file_api_notes_v1_messages_proto_rawDescOnce sync.Once
@@ -291,23 +519,29 @@ func file_api_notes_v1_messages_proto_rawDescGZIP() []byte {
 	return file_api_notes_v1_messages_proto_rawDescData
 }
 
-var file_api_notes_v1_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_api_notes_v1_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_api_notes_v1_messages_proto_goTypes = []any{
 	(*NoteIDRequest)(nil),         // 0: api.notes.v1.NoteIDRequest
 	(*NoteCreateRequest)(nil),     // 1: api.notes.v1.NoteCreateRequest
 	(*Note)(nil),                  // 2: api.notes.v1.Note
 	(*NoteList)(nil),              // 3: api.notes.v1.NoteList
-	(*timestamppb.Timestamp)(nil), // 4: google.protobuf.Timestamp
+	(*NoteEvent)(nil),             // 4: api.notes.v1.NoteEvent
+	(*Health)(nil),                // 5: api.notes.v1.Health
+	(*EventResponse)(nil),         // 6: api.notes.v1.EventResponse
+	(*Empty)(nil),                 // 7: api.notes.v1.Empty
+	(*timestamppb.Timestamp)(nil), // 8: google.protobuf.Timestamp
 }
 var file_api_notes_v1_messages_proto_depIdxs = []int32{
-	4, // 0: api.notes.v1.Note.created_at:type_name -> google.protobuf.Timestamp
-	4, // 1: api.notes.v1.Note.updated_at:type_name -> google.protobuf.Timestamp
+	8, // 0: api.notes.v1.Note.created_at:type_name -> google.protobuf.Timestamp
+	8, // 1: api.notes.v1.Note.updated_at:type_name -> google.protobuf.Timestamp
 	2, // 2: api.notes.v1.NoteList.notes:type_name -> api.notes.v1.Note
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	4, // 3: api.notes.v1.EventResponse.note:type_name -> api.notes.v1.NoteEvent
+	5, // 4: api.notes.v1.EventResponse.health:type_name -> api.notes.v1.Health
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_api_notes_v1_messages_proto_init() }
@@ -315,13 +549,17 @@ func file_api_notes_v1_messages_proto_init() {
 	if File_api_notes_v1_messages_proto != nil {
 		return
 	}
+	file_api_notes_v1_messages_proto_msgTypes[6].OneofWrappers = []any{
+		(*EventResponse_Note)(nil),
+		(*EventResponse_Health)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_notes_v1_messages_proto_rawDesc), len(file_api_notes_v1_messages_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

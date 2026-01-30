@@ -14,7 +14,13 @@ type grpcServer struct {
 	srv *grpc.Server
 }
 
-func NewServer(log logger.Logger, logInter, authInter grpc.UnaryServerInterceptor, opts ...option) (*grpcServer, net.Listener, error) {
+func NewServer(
+	log logger.Logger,
+	logUnary, authUnary grpc.UnaryServerInterceptor,
+	logStream grpc.StreamServerInterceptor,
+	opts ...option,
+) (*grpcServer, net.Listener, error) {
+
 	parameters := setupParameters(opts...)
 	lis, err := net.Listen("tcp", net.JoinHostPort("", parameters.port))
 	if err != nil {
@@ -23,7 +29,8 @@ func NewServer(log logger.Logger, logInter, authInter grpc.UnaryServerIntercepto
 	}
 	srv := grpc.NewServer(
 		grpc.KeepaliveParams(parameters.ServerParameters),
-		grpc.ChainUnaryInterceptor(logInter, authInter),
+		grpc.ChainUnaryInterceptor(logUnary, authUnary),
+		grpc.ChainStreamInterceptor(logStream),
 	)
 	log.Debug(
 		"server info",

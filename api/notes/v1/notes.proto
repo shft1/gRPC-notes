@@ -22,4 +22,7 @@ service NoteAPI {
 
   // DeleteByID - удалить заметку
   rpc DeleteByID(NoteIDRequest) returns(Note) {};
+
+  // SubscribeToEvents - подписка на событие "создание заметки"
+  rpc SubscribeToEvents(Empty) returns(stream EventResponse) {};
 }
