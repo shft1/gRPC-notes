@@ -19,3 +19,8 @@ type NoteCreate struct {
 	Title string
 	Desc  string
 }
+
+type NoteEvent struct {
+	ID    uuid.UUID
+	Title string
+}

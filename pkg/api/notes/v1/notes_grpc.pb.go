@@ -20,10 +20,11 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	NoteAPI_Create_FullMethodName     = "/api.notes.v1.NoteAPI/Create"
-	NoteAPI_GetByID_FullMethodName    = "/api.notes.v1.NoteAPI/GetByID"
-	NoteAPI_GetMulti_FullMethodName   = "/api.notes.v1.NoteAPI/GetMulti"
-	NoteAPI_DeleteByID_FullMethodName = "/api.notes.v1.NoteAPI/DeleteByID"
+	NoteAPI_Create_FullMethodName            = "/api.notes.v1.NoteAPI/Create"
+	NoteAPI_GetByID_FullMethodName           = "/api.notes.v1.NoteAPI/GetByID"
+	NoteAPI_GetMulti_FullMethodName          = "/api.notes.v1.NoteAPI/GetMulti"
+	NoteAPI_DeleteByID_FullMethodName        = "/api.notes.v1.NoteAPI/DeleteByID"
+	NoteAPI_SubscribeToEvents_FullMethodName = "/api.notes.v1.NoteAPI/SubscribeToEvents"
 )
 
 // NoteAPIClient is the client API for NoteAPI service.
@@ -40,6 +41,8 @@ type NoteAPIClient interface {
 	GetMulti(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*NoteList, error)
 	// DeleteByID - удалить заметку
 	DeleteByID(ctx context.Context, in *NoteIDRequest, opts ...grpc.CallOption) (*Note, error)
+	// SubscribeToEvents - подписка на событие "создание заметки"
+	SubscribeToEvents(ctx context.Context, in *Empty, opts ...grpc.CallOption) (grpc.ServerStreamingClient[EventResponse], error)
 }
 
 type noteAPIClient struct {
@@ -90,6 +93,25 @@ func (c *noteAPIClient) DeleteByID(ctx context.Context, in *NoteIDRequest, opts 
 	return out, nil
 }
 
+func (c *noteAPIClient) SubscribeToEvents(ctx context.Context, in *Empty, opts ...grpc.CallOption) (grpc.ServerStreamingClient[EventResponse], error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	stream, err := c.cc.NewStream(ctx, &NoteAPI_ServiceDesc.Streams[0], NoteAPI_SubscribeToEvents_FullMethodName, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &grpc.GenericClientStream[Empty, EventResponse]{ClientStream: stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type NoteAPI_SubscribeToEventsClient = grpc.ServerStreamingClient[EventResponse]
+
 // NoteAPIServer is the server API for NoteAPI service.
 // All implementations must embed UnimplementedNoteAPIServer
 // for forward compatibility.
@@ -104,6 +126,8 @@ type NoteAPIServer interface {
 	GetMulti(context.Context, *emptypb.Empty) (*NoteList, error)
 	// DeleteByID - удалить заметку
 	DeleteByID(context.Context, *NoteIDRequest) (*Note, error)
+	// SubscribeToEvents - подписка на событие "создание заметки"
+	SubscribeToEvents(*Empty, grpc.ServerStreamingServer[EventResponse]) error
 	mustEmbedUnimplementedNoteAPIServer()
 }
 
@@ -125,6 +149,9 @@ func (UnimplementedNoteAPIServer) GetMulti(context.Context, *emptypb.Empty) (*No
 }
 func (UnimplementedNoteAPIServer) DeleteByID(context.Context, *NoteIDRequest) (*Note, error) {
 	return nil, status.Error(codes.Unimplemented, "method DeleteByID not implemented")
+}
+func (UnimplementedNoteAPIServer) SubscribeToEvents(*Empty, grpc.ServerStreamingServer[EventResponse]) error {
+	return status.Error(codes.Unimplemented, "method SubscribeToEvents not implemented")
 }
 func (UnimplementedNoteAPIServer) mustEmbedUnimplementedNoteAPIServer() {}
 func (UnimplementedNoteAPIServer) testEmbeddedByValue()                 {}
@@ -219,6 +246,17 @@ func _NoteAPI_DeleteByID_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _NoteAPI_SubscribeToEvents_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(Empty)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(NoteAPIServer).SubscribeToEvents(m, &grpc.GenericServerStream[Empty, EventResponse]{ServerStream: stream})
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type NoteAPI_SubscribeToEventsServer = grpc.ServerStreamingServer[EventResponse]
+
 // NoteAPI_ServiceDesc is the grpc.ServiceDesc for NoteAPI service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -243,6 +281,12 @@ var NoteAPI_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _NoteAPI_DeleteByID_Handler,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "SubscribeToEvents",
+			Handler:       _NoteAPI_SubscribeToEvents_Handler,
+			ServerStreams: true,
+		},
+	},
 	Metadata: "api/notes/v1/notes.proto",
 }

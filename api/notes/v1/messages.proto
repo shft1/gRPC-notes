@@ -62,3 +62,31 @@ message NoteList {
     (buf.validate.field).required = true
   ];
 }
+
+// NoteEvent - событие заметки
+message NoteEvent {
+  string id = 1 [
+    (buf.validate.field).string.uuid = true
+  ];
+  string title = 2 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 5,
+    (buf.validate.field).string.max_len = 25
+  ];
+}
+
+// Health - сообщение об установлении stream
+message Health {
+  string message = 1;
+}
+
+// EventResponse - сообщение stream
+message EventResponse {
+  oneof event {
+    NoteEvent note = 1;
+    Health health = 2;
+  }
+}
+
+// Empty - сообщение на установление stream
+message Empty {}

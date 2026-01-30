@@ -15,7 +15,7 @@ func toDomainCreate(in *pb.NoteCreateRequest) *notes.NoteCreate {
 
 func toDTOResponse(item *notes.Note) *pb.Note {
 	return &pb.Note{
-		Id:      item.ID.String(),
+		Id:        item.ID.String(),
 		Title:     item.Title,
 		Desc:      item.Desc,
 		IsDel:     item.IsDel,
@@ -30,4 +30,11 @@ func toDTOListResponse(items []*notes.Note) *pb.NoteList {
 		dtoList = append(dtoList, toDTOResponse(item))
 	}
 	return &pb.NoteList{Notes: dtoList}
+}
+
+func toDTOEventResponse(item *notes.NoteEvent) *pb.NoteEvent {
+	return &pb.NoteEvent{
+		Id:    item.ID.String(),
+		Title: item.Title,
+	}
 }
