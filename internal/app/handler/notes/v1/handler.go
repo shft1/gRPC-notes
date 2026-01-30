@@ -8,12 +8,14 @@ import (
 type NoteHandler struct {
 	pb.UnimplementedNoteAPIServer
 	log         logger.Logger
+	bus         eventBus
 	noteUsecase noteUsecase
 }
 
-func NewNoteHandler(log logger.Logger, noteUsecase noteUsecase) *NoteHandler {
+func NewNoteHandler(log logger.Logger, bus eventBus, noteUsecase noteUsecase) *NoteHandler {
 	return &NoteHandler{
 		log:         log,
+		bus:         bus,
 		noteUsecase: noteUsecase,
 	}
 }

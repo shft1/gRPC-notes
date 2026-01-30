@@ -13,3 +13,8 @@ type noteUsecase interface {
 	GetMulti(context.Context) ([]*notes.Note, error)
 	DeleteByID(context.Context, uuid.UUID) (*notes.Note, error)
 }
+
+type eventBus interface {
+	Produce(event *notes.NoteEvent)
+	Consume(ctx context.Context) (*notes.NoteEvent, error)
+}

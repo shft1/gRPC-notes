@@ -20,6 +20,9 @@ func (h *NoteHandler) Create(ctx context.Context, req *pb.NoteCreateRequest) (*p
 	if err != nil {
 		return nil, mapError(h.log, err)
 	}
+
+	h.bus.Produce(&notes.NoteEvent{ID: note.ID, Title: note.Title})
+
 	notePB := toDTOResponse(note)
 	if err := protovalidate.Validate(notePB); err != nil {
 		return nil, mapError(h.log, notes.ErrNoteResponse)
