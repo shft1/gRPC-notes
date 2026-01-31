@@ -8,6 +8,7 @@ import (
 
 	"github.com/shft1/grpc-notes/observability/logger"
 	pb "github.com/shft1/grpc-notes/pkg/api/notes/v1"
+	"google.golang.org/grpc/status"
 )
 
 func (gw *noteGateway) SubscribeToEvents(ctx context.Context, errChan chan<- error) {
@@ -17,13 +18,18 @@ func (gw *noteGateway) SubscribeToEvents(ctx context.Context, errChan chan<- err
 	st, err := gw.client.SubscribeToEvents(eventCtx, &pb.Empty{})
 
 	if err != nil {
-		gw.log.Error("failed to init stream", logger.NewField("error", err))
+		gw.log.Error("failed to init server-stream", logger.NewField("error", err))
+		if stat, ok := status.FromError(err); ok {
+			err = mapErrorRPC(gw.log, stat)
+		} else {
+			err = mapError(gw.log, err)
+		}
 		errChan <- err
 		return
 	}
 
 	errChan <- nil
-	gw.log.Info("successfully subscribed")
+	gw.log.Info("successfully create server-stream event")
 
 	for {
 		if eventCtx.Err() != nil {
@@ -33,7 +39,7 @@ func (gw *noteGateway) SubscribeToEvents(ctx context.Context, errChan chan<- err
 		event, err := st.Recv()
 		if err != nil {
 			if err == io.EOF {
-				gw.log.Warn("server closed stream")
+				gw.log.Warn("server closed server-stream")
 				break
 			}
 			gw.log.Error("failed to recieve event", logger.NewField("error", err))

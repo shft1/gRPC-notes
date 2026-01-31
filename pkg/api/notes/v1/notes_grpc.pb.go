@@ -25,6 +25,7 @@ const (
 	NoteAPI_GetMulti_FullMethodName          = "/api.notes.v1.NoteAPI/GetMulti"
 	NoteAPI_DeleteByID_FullMethodName        = "/api.notes.v1.NoteAPI/DeleteByID"
 	NoteAPI_SubscribeToEvents_FullMethodName = "/api.notes.v1.NoteAPI/SubscribeToEvents"
+	NoteAPI_UploadMetrics_FullMethodName     = "/api.notes.v1.NoteAPI/UploadMetrics"
 )
 
 // NoteAPIClient is the client API for NoteAPI service.
@@ -43,6 +44,8 @@ type NoteAPIClient interface {
 	DeleteByID(ctx context.Context, in *NoteIDRequest, opts ...grpc.CallOption) (*Note, error)
 	// SubscribeToEvents - подписка на событие "создание заметки"
 	SubscribeToEvents(ctx context.Context, in *Empty, opts ...grpc.CallOption) (grpc.ServerStreamingClient[EventResponse], error)
+	// UploadMetrics - загрузка метрик
+	UploadMetrics(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[MetricRequest, SummaryResponse], error)
 }
 
 type noteAPIClient struct {
@@ -112,6 +115,19 @@ func (c *noteAPIClient) SubscribeToEvents(ctx context.Context, in *Empty, opts .
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type NoteAPI_SubscribeToEventsClient = grpc.ServerStreamingClient[EventResponse]
 
+func (c *noteAPIClient) UploadMetrics(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[MetricRequest, SummaryResponse], error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	stream, err := c.cc.NewStream(ctx, &NoteAPI_ServiceDesc.Streams[1], NoteAPI_UploadMetrics_FullMethodName, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &grpc.GenericClientStream[MetricRequest, SummaryResponse]{ClientStream: stream}
+	return x, nil
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type NoteAPI_UploadMetricsClient = grpc.ClientStreamingClient[MetricRequest, SummaryResponse]
+
 // NoteAPIServer is the server API for NoteAPI service.
 // All implementations must embed UnimplementedNoteAPIServer
 // for forward compatibility.
@@ -128,6 +144,8 @@ type NoteAPIServer interface {
 	DeleteByID(context.Context, *NoteIDRequest) (*Note, error)
 	// SubscribeToEvents - подписка на событие "создание заметки"
 	SubscribeToEvents(*Empty, grpc.ServerStreamingServer[EventResponse]) error
+	// UploadMetrics - загрузка метрик
+	UploadMetrics(grpc.ClientStreamingServer[MetricRequest, SummaryResponse]) error
 	mustEmbedUnimplementedNoteAPIServer()
 }
 
@@ -152,6 +170,9 @@ func (UnimplementedNoteAPIServer) DeleteByID(context.Context, *NoteIDRequest) (*
 }
 func (UnimplementedNoteAPIServer) SubscribeToEvents(*Empty, grpc.ServerStreamingServer[EventResponse]) error {
 	return status.Error(codes.Unimplemented, "method SubscribeToEvents not implemented")
+}
+func (UnimplementedNoteAPIServer) UploadMetrics(grpc.ClientStreamingServer[MetricRequest, SummaryResponse]) error {
+	return status.Error(codes.Unimplemented, "method UploadMetrics not implemented")
 }
 func (UnimplementedNoteAPIServer) mustEmbedUnimplementedNoteAPIServer() {}
 func (UnimplementedNoteAPIServer) testEmbeddedByValue()                 {}
@@ -257,6 +278,13 @@ func _NoteAPI_SubscribeToEvents_Handler(srv interface{}, stream grpc.ServerStrea
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type NoteAPI_SubscribeToEventsServer = grpc.ServerStreamingServer[EventResponse]
 
+func _NoteAPI_UploadMetrics_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(NoteAPIServer).UploadMetrics(&grpc.GenericServerStream[MetricRequest, SummaryResponse]{ServerStream: stream})
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type NoteAPI_UploadMetricsServer = grpc.ClientStreamingServer[MetricRequest, SummaryResponse]
+
 // NoteAPI_ServiceDesc is the grpc.ServiceDesc for NoteAPI service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -286,6 +314,11 @@ var NoteAPI_ServiceDesc = grpc.ServiceDesc{
 			StreamName:    "SubscribeToEvents",
 			Handler:       _NoteAPI_SubscribeToEvents_Handler,
 			ServerStreams: true,
+		},
+		{
+			StreamName:    "UploadMetrics",
+			Handler:       _NoteAPI_UploadMetrics_Handler,
+			ClientStreams: true,
 		},
 	},
 	Metadata: "api/notes/v1/notes.proto",

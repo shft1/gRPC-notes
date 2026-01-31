@@ -24,5 +24,6 @@ func (nr *NoteRouter) SetupRoutesV1() {
 		r.Post("/", nr.hand.Create)
 		r.Delete("/{uuid}", nr.hand.DeleteByID)
 		r.Get("/subscribe", nr.hand.SubscribeToEvents)
+		r.Post("/metrics/upload", nr.hand.UploadMetrics)
 	})
 }

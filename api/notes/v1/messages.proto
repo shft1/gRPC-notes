@@ -75,12 +75,7 @@ message NoteEvent {
   ];
 }
 
-// Health - сообщение об установлении stream
-message Health {
-  string message = 1;
-}
-
-// EventResponse - сообщение stream
+// EventResponse - сообщение server-stream
 message EventResponse {
   oneof event {
     NoteEvent note = 1;
@@ -88,5 +83,20 @@ message EventResponse {
   }
 }
 
-// Empty - сообщение на установление stream
+// Health - сообщение об установлении server-stream
+message Health {
+  string message = 1;
+}
+
+// Empty - сообщение на установление server-stream
 message Empty {}
+
+// MetricRequest - сообщение client-stream
+message MetricRequest {
+  int64 number = 1;
+}
+
+// SummaryResponse - сообщение по завершении client-stream
+message SummaryResponse {
+  int64 summary = 1;
+}
