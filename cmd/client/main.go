@@ -12,6 +12,7 @@ import (
 	"github.com/shft1/grpc-notes/internal/client/config"
 	noteGW "github.com/shft1/grpc-notes/internal/client/gateway/notes/v1"
 	noteHand "github.com/shft1/grpc-notes/internal/client/handler/notes/v1"
+	"github.com/shft1/grpc-notes/internal/client/middleware/stream"
 	noteRoute "github.com/shft1/grpc-notes/internal/client/router/notes/v1"
 	"github.com/shft1/grpc-notes/internal/client/server"
 	"github.com/shft1/grpc-notes/observability/logger"
@@ -36,7 +37,13 @@ func main() {
 	}
 	cfg := config.SetupClientEnv(zlog)
 
-	conn, err := grpc.NewClient(net.JoinHostPort(cfg.HostGRPC, cfg.PortGRPC), grpc.WithTransportCredentials(insecure.NewCredentials()))
+	logStreamInter := stream.NewLoggerInterceptor(zlog)
+
+	conn, err := grpc.NewClient(
+		net.JoinHostPort(cfg.HostGRPC, cfg.PortGRPC),
+		grpc.WithChainStreamInterceptor(logStreamInter),
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+	)
 	if err != nil {
 		zlog.Error("failed to create connection with gRPC-server", logger.NewField("error", err))
 		return
@@ -45,7 +52,7 @@ func main() {
 
 	notePB := pb.NewNoteAPIClient(conn)
 	noteGW := noteGW.NewNoteGateway(zlog, notePB)
-	noteHand := noteHand.NewNoteHandler(zlog, noteGW)
+	noteHand := noteHand.NewNoteHandler(sysCtx, zlog, noteGW)
 
 	router := chi.NewRouter()
 

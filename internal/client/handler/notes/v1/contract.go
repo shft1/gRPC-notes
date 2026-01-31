@@ -12,4 +12,5 @@ type gateway interface {
 	GetByID(ctx context.Context, id uuid.UUID) (*notes.Note, error)
 	GetMulti(ctx context.Context) ([]*notes.Note, error)
 	DeleteByID(ctx context.Context, id uuid.UUID) (*notes.Note, error)
+	SubscribeToEvents(ctx context.Context, errChan chan<- error)
 }
