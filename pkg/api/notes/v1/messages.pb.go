@@ -8,6 +8,7 @@ package v1
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	status "google.golang.org/genproto/googleapis/rpc/status"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -559,11 +560,102 @@ func (x *SummaryResponse) GetSummary() int64 {
 	return 0
 }
 
+// Message - сообщение чата
+type Message struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CorrelationId int64                  `protobuf:"varint,1,opt,name=correlation_id,json=correlationId,proto3" json:"correlation_id,omitempty"`
+	// Types that are valid to be assigned to Payload:
+	//
+	//	*Message_Text
+	//	*Message_Error
+	Payload       isMessage_Payload `protobuf_oneof:"payload"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Message) Reset() {
+	*x = Message{}
+	mi := &file_api_notes_v1_messages_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Message) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Message) ProtoMessage() {}
+
+func (x *Message) ProtoReflect() protoreflect.Message {
+	mi := &file_api_notes_v1_messages_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Message.ProtoReflect.Descriptor instead.
+func (*Message) Descriptor() ([]byte, []int) {
+	return file_api_notes_v1_messages_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *Message) GetCorrelationId() int64 {
+	if x != nil {
+		return x.CorrelationId
+	}
+	return 0
+}
+
+func (x *Message) GetPayload() isMessage_Payload {
+	if x != nil {
+		return x.Payload
+	}
+	return nil
+}
+
+func (x *Message) GetText() string {
+	if x != nil {
+		if x, ok := x.Payload.(*Message_Text); ok {
+			return x.Text
+		}
+	}
+	return ""
+}
+
+func (x *Message) GetError() *status.Status {
+	if x != nil {
+		if x, ok := x.Payload.(*Message_Error); ok {
+			return x.Error
+		}
+	}
+	return nil
+}
+
+type isMessage_Payload interface {
+	isMessage_Payload()
+}
+
+type Message_Text struct {
+	Text string `protobuf:"bytes,2,opt,name=text,proto3,oneof"`
+}
+
+type Message_Error struct {
+	Error *status.Status `protobuf:"bytes,3,opt,name=error,proto3,oneof"`
+}
+
+func (*Message_Text) isMessage_Payload() {}
+
+func (*Message_Error) isMessage_Payload() {}
+
 var File_api_notes_v1_messages_proto protoreflect.FileDescriptor
 
 const file_api_notes_v1_messages_proto_rawDesc = "" +
 	"\n" +
-	"\x1bapi/notes/v1/messages.proto\x12\fapi.notes.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bbuf/validate/validate.proto\")\n" +
+	"\x1bapi/notes/v1/messages.proto\x12\fapi.notes.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bbuf/validate/validate.proto\x1a\x17google/rpc/status.proto\")\n" +
 	"\rNoteIDRequest\x12\x18\n" +
 	"\x02id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\"W\n" +
 	"\x11NoteCreateRequest\x12\"\n" +
@@ -599,7 +691,12 @@ const file_api_notes_v1_messages_proto_rawDesc = "" +
 	"\rMetricRequest\x12\x16\n" +
 	"\x06number\x18\x01 \x01(\x03R\x06number\"+\n" +
 	"\x0fSummaryResponse\x12\x18\n" +
-	"\asummary\x18\x01 \x01(\x03R\asummaryB.Z,github.com/shft1/grpc-notes/pkg/api/notes/v1b\x06proto3"
+	"\asummary\x18\x01 \x01(\x03R\asummary\"}\n" +
+	"\aMessage\x12%\n" +
+	"\x0ecorrelation_id\x18\x01 \x01(\x03R\rcorrelationId\x12\x14\n" +
+	"\x04text\x18\x02 \x01(\tH\x00R\x04text\x12*\n" +
+	"\x05error\x18\x03 \x01(\v2\x12.google.rpc.StatusH\x00R\x05errorB\t\n" +
+	"\apayloadB.Z,github.com/shft1/grpc-notes/pkg/api/notes/v1b\x06proto3"
 
 var (
 	file_api_notes_v1_messages_proto_rawDescOnce sync.Once
@@ -613,7 +710,7 @@ func file_api_notes_v1_messages_proto_rawDescGZIP() []byte {
 	return file_api_notes_v1_messages_proto_rawDescData
 }
 
-var file_api_notes_v1_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_api_notes_v1_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_api_notes_v1_messages_proto_goTypes = []any{
 	(*NoteIDRequest)(nil),         // 0: api.notes.v1.NoteIDRequest
 	(*NoteCreateRequest)(nil),     // 1: api.notes.v1.NoteCreateRequest
@@ -625,19 +722,22 @@ var file_api_notes_v1_messages_proto_goTypes = []any{
 	(*Empty)(nil),                 // 7: api.notes.v1.Empty
 	(*MetricRequest)(nil),         // 8: api.notes.v1.MetricRequest
 	(*SummaryResponse)(nil),       // 9: api.notes.v1.SummaryResponse
-	(*timestamppb.Timestamp)(nil), // 10: google.protobuf.Timestamp
+	(*Message)(nil),               // 10: api.notes.v1.Message
+	(*timestamppb.Timestamp)(nil), // 11: google.protobuf.Timestamp
+	(*status.Status)(nil),         // 12: google.rpc.Status
 }
 var file_api_notes_v1_messages_proto_depIdxs = []int32{
-	10, // 0: api.notes.v1.Note.created_at:type_name -> google.protobuf.Timestamp
-	10, // 1: api.notes.v1.Note.updated_at:type_name -> google.protobuf.Timestamp
+	11, // 0: api.notes.v1.Note.created_at:type_name -> google.protobuf.Timestamp
+	11, // 1: api.notes.v1.Note.updated_at:type_name -> google.protobuf.Timestamp
 	2,  // 2: api.notes.v1.NoteList.notes:type_name -> api.notes.v1.Note
 	4,  // 3: api.notes.v1.EventResponse.note:type_name -> api.notes.v1.NoteEvent
 	6,  // 4: api.notes.v1.EventResponse.health:type_name -> api.notes.v1.Health
-	5,  // [5:5] is the sub-list for method output_type
-	5,  // [5:5] is the sub-list for method input_type
-	5,  // [5:5] is the sub-list for extension type_name
-	5,  // [5:5] is the sub-list for extension extendee
-	0,  // [0:5] is the sub-list for field type_name
+	12, // 5: api.notes.v1.Message.error:type_name -> google.rpc.Status
+	6,  // [6:6] is the sub-list for method output_type
+	6,  // [6:6] is the sub-list for method input_type
+	6,  // [6:6] is the sub-list for extension type_name
+	6,  // [6:6] is the sub-list for extension extendee
+	0,  // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_api_notes_v1_messages_proto_init() }
@@ -649,13 +749,17 @@ func file_api_notes_v1_messages_proto_init() {
 		(*EventResponse_Note)(nil),
 		(*EventResponse_Health)(nil),
 	}
+	file_api_notes_v1_messages_proto_msgTypes[10].OneofWrappers = []any{
+		(*Message_Text)(nil),
+		(*Message_Error)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_notes_v1_messages_proto_rawDesc), len(file_api_notes_v1_messages_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   10,
+			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -26,6 +26,7 @@ const (
 	NoteAPI_DeleteByID_FullMethodName        = "/api.notes.v1.NoteAPI/DeleteByID"
 	NoteAPI_SubscribeToEvents_FullMethodName = "/api.notes.v1.NoteAPI/SubscribeToEvents"
 	NoteAPI_UploadMetrics_FullMethodName     = "/api.notes.v1.NoteAPI/UploadMetrics"
+	NoteAPI_Chat_FullMethodName              = "/api.notes.v1.NoteAPI/Chat"
 )
 
 // NoteAPIClient is the client API for NoteAPI service.
@@ -46,6 +47,8 @@ type NoteAPIClient interface {
 	SubscribeToEvents(ctx context.Context, in *Empty, opts ...grpc.CallOption) (grpc.ServerStreamingClient[EventResponse], error)
 	// UploadMetrics - загрузка метрик
 	UploadMetrics(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[MetricRequest, SummaryResponse], error)
+	// Chat - двусторонний чат
+	Chat(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[Message, Message], error)
 }
 
 type noteAPIClient struct {
@@ -128,6 +131,19 @@ func (c *noteAPIClient) UploadMetrics(ctx context.Context, opts ...grpc.CallOpti
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type NoteAPI_UploadMetricsClient = grpc.ClientStreamingClient[MetricRequest, SummaryResponse]
 
+func (c *noteAPIClient) Chat(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[Message, Message], error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	stream, err := c.cc.NewStream(ctx, &NoteAPI_ServiceDesc.Streams[2], NoteAPI_Chat_FullMethodName, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &grpc.GenericClientStream[Message, Message]{ClientStream: stream}
+	return x, nil
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type NoteAPI_ChatClient = grpc.BidiStreamingClient[Message, Message]
+
 // NoteAPIServer is the server API for NoteAPI service.
 // All implementations must embed UnimplementedNoteAPIServer
 // for forward compatibility.
@@ -146,6 +162,8 @@ type NoteAPIServer interface {
 	SubscribeToEvents(*Empty, grpc.ServerStreamingServer[EventResponse]) error
 	// UploadMetrics - загрузка метрик
 	UploadMetrics(grpc.ClientStreamingServer[MetricRequest, SummaryResponse]) error
+	// Chat - двусторонний чат
+	Chat(grpc.BidiStreamingServer[Message, Message]) error
 	mustEmbedUnimplementedNoteAPIServer()
 }
 
@@ -173,6 +191,9 @@ func (UnimplementedNoteAPIServer) SubscribeToEvents(*Empty, grpc.ServerStreaming
 }
 func (UnimplementedNoteAPIServer) UploadMetrics(grpc.ClientStreamingServer[MetricRequest, SummaryResponse]) error {
 	return status.Error(codes.Unimplemented, "method UploadMetrics not implemented")
+}
+func (UnimplementedNoteAPIServer) Chat(grpc.BidiStreamingServer[Message, Message]) error {
+	return status.Error(codes.Unimplemented, "method Chat not implemented")
 }
 func (UnimplementedNoteAPIServer) mustEmbedUnimplementedNoteAPIServer() {}
 func (UnimplementedNoteAPIServer) testEmbeddedByValue()                 {}
@@ -285,6 +306,13 @@ func _NoteAPI_UploadMetrics_Handler(srv interface{}, stream grpc.ServerStream) e
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type NoteAPI_UploadMetricsServer = grpc.ClientStreamingServer[MetricRequest, SummaryResponse]
 
+func _NoteAPI_Chat_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(NoteAPIServer).Chat(&grpc.GenericServerStream[Message, Message]{ServerStream: stream})
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type NoteAPI_ChatServer = grpc.BidiStreamingServer[Message, Message]
+
 // NoteAPI_ServiceDesc is the grpc.ServiceDesc for NoteAPI service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -318,6 +346,12 @@ var NoteAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "UploadMetrics",
 			Handler:       _NoteAPI_UploadMetrics_Handler,
+			ClientStreams: true,
+		},
+		{
+			StreamName:    "Chat",
+			Handler:       _NoteAPI_Chat_Handler,
+			ServerStreams: true,
 			ClientStreams: true,
 		},
 	},

@@ -17,7 +17,7 @@ func (h *NoteHandler) UploadMetrics(st grpc.ClientStreamingServer[pb.MetricReque
 				h.log.Info("client stop streaming")
 				return st.SendAndClose(&pb.SummaryResponse{Summary: metricsTotal})
 			}
-			return h.errorRecieveHandling(err)
+			return errorRecieveHandling(h.log, err)
 		}
 		metricsTotal += metric.Number
 	}

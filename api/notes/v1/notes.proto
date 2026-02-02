@@ -28,4 +28,7 @@ service NoteAPI {
 
   // UploadMetrics - загрузка метрик
   rpc UploadMetrics(stream MetricRequest) returns(SummaryResponse) {};
+
+  // Chat - двусторонний чат
+  rpc Chat(stream Message) returns(stream Message) {};
 }

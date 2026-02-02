@@ -12,13 +12,13 @@ func (h *NoteHandler) SubscribeToEvents(req *pb.Empty, st grpc.ServerStreamingSe
 		Event: &pb.EventResponse_Health{Health: &pb.Health{Message: "event subscription is successful"}},
 	})
 	if err != nil {
-		return h.errorSendHandling(err)
+		return errorSendHandling(h.log, err)
 	}
 
 	for {
 		event, err := h.bus.Consume(ctx)
 		if err != nil {
-			return h.errorConsumeHandling(err)
+			return h.errorConsumeHandling(h.log, err)
 		}
 
 		err = st.Send(&pb.EventResponse{
@@ -27,7 +27,7 @@ func (h *NoteHandler) SubscribeToEvents(req *pb.Empty, st grpc.ServerStreamingSe
 			},
 		})
 		if err != nil {
-			return h.errorSendHandling(err)
+			return errorSendHandling(h.log, err)
 		}
 	}
 }

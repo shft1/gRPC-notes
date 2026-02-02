@@ -7,6 +7,7 @@ option go_package = "github.com/shft1/grpc-notes/pkg/api/notes/v1";
 import "google/protobuf/timestamp.proto";
 
 import "buf/validate/validate.proto";
+import "google/rpc/status.proto";
 
 // NoteIDRequest - сообщение ID заметки
 message NoteIDRequest {
@@ -99,4 +100,14 @@ message MetricRequest {
 // SummaryResponse - сообщение по завершении client-stream
 message SummaryResponse {
   int64 summary = 1;
+}
+
+// Message - сообщение чата
+message Message {
+  int64 correlation_id = 1;
+
+  oneof payload {
+    string text = 2;
+    google.rpc.Status error = 3;
+  }
 }

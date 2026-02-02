@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (h *NoteHandler) isContextError(err error) bool {
+func isContextError(err error) bool {
 	if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
 		return true
 	}
@@ -22,29 +22,32 @@ func (h *NoteHandler) isContextError(err error) bool {
 	return false
 }
 
-func (h *NoteHandler) errorSendHandling(err error) error {
-	if h.isContextError(err) {
-		h.log.Info("context done", logger.NewField("reason", err))
+func errorSendHandling(log logger.Logger, err error) error {
+	if isContextError(err) {
+		log.Info("context done", logger.NewField("reason", err))
 		return nil
 	}
-	h.log.Error("failed to send message", logger.NewField("error", err))
+	log.Error("failed to send message", logger.NewField("error", err))
+	// return &statusrpc.Status{Code: int32(codes.Internal), Message: "internal error"}
 	return status.Error(codes.Internal, "internal error")
 }
 
-func (h *NoteHandler) errorRecieveHandling(err error) error {
-	if h.isContextError(err) {
-		h.log.Info("context done", logger.NewField("reason", err))
+func errorRecieveHandling(log logger.Logger, err error) error {
+	if isContextError(err) {
+		log.Info("context done", logger.NewField("reason", err))
 		return nil
 	}
-	h.log.Error("failed to recieve message", logger.NewField("error", err))
+	log.Error("failed to recieve message", logger.NewField("error", err))
+	// return &statusrpc.Status{Code: int32(codes.Internal), Message: "internal error"}
 	return status.Error(codes.Internal, "internal error")
 }
 
-func (h *NoteHandler) errorConsumeHandling(err error) error {
-	if h.isContextError(err) {
-		h.log.Info("context done", logger.NewField("reason", err))
+func (h *NoteHandler) errorConsumeHandling(log logger.Logger, err error) error {
+	if isContextError(err) {
+		log.Info("context done", logger.NewField("reason", err))
 		return nil
 	}
-	h.log.Error("failed to consume event bus", logger.NewField("error", err))
+	log.Error("failed to consume event bus", logger.NewField("error", err))
+	// return &statusrpc.Status{Code: int32(codes.Internal), Message: "internal error"}
 	return status.Error(codes.Internal, "internal error")
 }
