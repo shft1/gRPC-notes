@@ -17,8 +17,10 @@ import (
 func (h *NoteHandler) Chat(st grpc.BidiStreamingServer[pb.Message, pb.Message]) error {
 	ctx := st.Context()
 
-	messagesChan := h.initMessages()
 	errSystemChan := make(chan error, 1)
+	defer close(errSystemChan)
+
+	messagesChan := h.initMessages()
 	replyChan := make(chan *pb.Message, 10)
 	errChan := make(chan *pb.Message, 10)
 
@@ -28,7 +30,6 @@ func (h *NoteHandler) Chat(st grpc.BidiStreamingServer[pb.Message, pb.Message]) 
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		defer close(errSystemChan)
 		defer close(replyChan)
 		defer close(errChan)
 
@@ -58,7 +59,7 @@ func (h *NoteHandler) Chat(st grpc.BidiStreamingServer[pb.Message, pb.Message]) 
 					}
 				}
 			}
-
+			time.Sleep(3 * time.Second)
 		}
 	}()
 

@@ -14,4 +14,5 @@ type gateway interface {
 	DeleteByID(ctx context.Context, id uuid.UUID) (*notes.Note, error)
 	SubscribeToEvents(ctx context.Context, errChan chan<- error)
 	UploadMetrics(ctx context.Context) (int64, error)
+	Chat(ctx context.Context, errChan chan<- error)
 }
