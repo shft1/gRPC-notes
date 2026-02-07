@@ -25,4 +25,10 @@ service NoteAPI {
 
   // SubscribeToEvents - подписка на событие "создание заметки"
   rpc SubscribeToEvents(Empty) returns(stream EventResponse) {};
+
+  // UploadMetrics - загрузка метрик
+  rpc UploadMetrics(stream MetricRequest) returns(SummaryResponse) {};
+
+  // Chat - двусторонний чат
+  rpc Chat(stream Message) returns(stream Message) {};
 }

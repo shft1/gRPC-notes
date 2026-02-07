@@ -31,10 +31,3 @@ func toDTOListResponse(items []*notes.Note) *pb.NoteList {
 	}
 	return &pb.NoteList{Notes: dtoList}
 }
-
-func toDTOEventResponse(item *notes.NoteEvent) *pb.NoteEvent {
-	return &pb.NoteEvent{
-		Id:    item.ID.String(),
-		Title: item.Title,
-	}
-}

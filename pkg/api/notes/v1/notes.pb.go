@@ -26,23 +26,28 @@ var File_api_notes_v1_notes_proto protoreflect.FileDescriptor
 
 const file_api_notes_v1_notes_proto_rawDesc = "" +
 	"\n" +
-	"\x18api/notes/v1/notes.proto\x12\fapi.notes.v1\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bapi/notes/v1/messages.proto2\xd2\x02\n" +
+	"\x18api/notes/v1/notes.proto\x12\fapi.notes.v1\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bapi/notes/v1/messages.proto2\xdf\x03\n" +
 	"\aNoteAPI\x12?\n" +
 	"\x06Create\x12\x1f.api.notes.v1.NoteCreateRequest\x1a\x12.api.notes.v1.Note\"\x00\x12<\n" +
 	"\aGetByID\x12\x1b.api.notes.v1.NoteIDRequest\x1a\x12.api.notes.v1.Note\"\x00\x12<\n" +
 	"\bGetMulti\x12\x16.google.protobuf.Empty\x1a\x16.api.notes.v1.NoteList\"\x00\x12?\n" +
 	"\n" +
 	"DeleteByID\x12\x1b.api.notes.v1.NoteIDRequest\x1a\x12.api.notes.v1.Note\"\x00\x12I\n" +
-	"\x11SubscribeToEvents\x12\x13.api.notes.v1.Empty\x1a\x1b.api.notes.v1.EventResponse\"\x000\x01B.Z,github.com/shft1/grpc-notes/pkg/api/notes/v1b\x06proto3"
+	"\x11SubscribeToEvents\x12\x13.api.notes.v1.Empty\x1a\x1b.api.notes.v1.EventResponse\"\x000\x01\x12O\n" +
+	"\rUploadMetrics\x12\x1b.api.notes.v1.MetricRequest\x1a\x1d.api.notes.v1.SummaryResponse\"\x00(\x01\x12:\n" +
+	"\x04Chat\x12\x15.api.notes.v1.Message\x1a\x15.api.notes.v1.Message\"\x00(\x010\x01B.Z,github.com/shft1/grpc-notes/pkg/api/notes/v1b\x06proto3"
 
 var file_api_notes_v1_notes_proto_goTypes = []any{
 	(*NoteCreateRequest)(nil), // 0: api.notes.v1.NoteCreateRequest
 	(*NoteIDRequest)(nil),     // 1: api.notes.v1.NoteIDRequest
 	(*emptypb.Empty)(nil),     // 2: google.protobuf.Empty
 	(*Empty)(nil),             // 3: api.notes.v1.Empty
-	(*Note)(nil),              // 4: api.notes.v1.Note
-	(*NoteList)(nil),          // 5: api.notes.v1.NoteList
-	(*EventResponse)(nil),     // 6: api.notes.v1.EventResponse
+	(*MetricRequest)(nil),     // 4: api.notes.v1.MetricRequest
+	(*Message)(nil),           // 5: api.notes.v1.Message
+	(*Note)(nil),              // 6: api.notes.v1.Note
+	(*NoteList)(nil),          // 7: api.notes.v1.NoteList
+	(*EventResponse)(nil),     // 8: api.notes.v1.EventResponse
+	(*SummaryResponse)(nil),   // 9: api.notes.v1.SummaryResponse
 }
 var file_api_notes_v1_notes_proto_depIdxs = []int32{
 	0, // 0: api.notes.v1.NoteAPI.Create:input_type -> api.notes.v1.NoteCreateRequest
@@ -50,13 +55,17 @@ var file_api_notes_v1_notes_proto_depIdxs = []int32{
 	2, // 2: api.notes.v1.NoteAPI.GetMulti:input_type -> google.protobuf.Empty
 	1, // 3: api.notes.v1.NoteAPI.DeleteByID:input_type -> api.notes.v1.NoteIDRequest
 	3, // 4: api.notes.v1.NoteAPI.SubscribeToEvents:input_type -> api.notes.v1.Empty
-	4, // 5: api.notes.v1.NoteAPI.Create:output_type -> api.notes.v1.Note
-	4, // 6: api.notes.v1.NoteAPI.GetByID:output_type -> api.notes.v1.Note
-	5, // 7: api.notes.v1.NoteAPI.GetMulti:output_type -> api.notes.v1.NoteList
-	4, // 8: api.notes.v1.NoteAPI.DeleteByID:output_type -> api.notes.v1.Note
-	6, // 9: api.notes.v1.NoteAPI.SubscribeToEvents:output_type -> api.notes.v1.EventResponse
-	5, // [5:10] is the sub-list for method output_type
-	0, // [0:5] is the sub-list for method input_type
+	4, // 5: api.notes.v1.NoteAPI.UploadMetrics:input_type -> api.notes.v1.MetricRequest
+	5, // 6: api.notes.v1.NoteAPI.Chat:input_type -> api.notes.v1.Message
+	6, // 7: api.notes.v1.NoteAPI.Create:output_type -> api.notes.v1.Note
+	6, // 8: api.notes.v1.NoteAPI.GetByID:output_type -> api.notes.v1.Note
+	7, // 9: api.notes.v1.NoteAPI.GetMulti:output_type -> api.notes.v1.NoteList
+	6, // 10: api.notes.v1.NoteAPI.DeleteByID:output_type -> api.notes.v1.Note
+	8, // 11: api.notes.v1.NoteAPI.SubscribeToEvents:output_type -> api.notes.v1.EventResponse
+	9, // 12: api.notes.v1.NoteAPI.UploadMetrics:output_type -> api.notes.v1.SummaryResponse
+	5, // 13: api.notes.v1.NoteAPI.Chat:output_type -> api.notes.v1.Message
+	7, // [7:14] is the sub-list for method output_type
+	0, // [0:7] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name

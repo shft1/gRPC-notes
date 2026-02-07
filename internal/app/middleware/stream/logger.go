@@ -7,7 +7,7 @@ import (
 
 func NewLoggerInterceptor(log logger.Logger) grpc.StreamServerInterceptor {
 	return func(srv any, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
-		log.Info("request to grpc-stream", logger.NewField("method", info.FullMethod))
+		log.Debug("request to grpc-stream", logger.NewField("method", info.FullMethod))
 
 		wrappedStream := &wrappedServerStream{
 			log:          log,
@@ -19,7 +19,7 @@ func NewLoggerInterceptor(log logger.Logger) grpc.StreamServerInterceptor {
 		if err != nil {
 			log.Error("error with grpc-stream", logger.NewField("method", info.FullMethod))
 		}
-		log.Info("grpc-stream closed", logger.NewField("method", info.FullMethod))
+		log.Debug("grpc-stream closed", logger.NewField("method", info.FullMethod))
 		return err
 	}
 }
@@ -30,12 +30,12 @@ type wrappedServerStream struct {
 }
 
 func (ss *wrappedServerStream) SendMsg(m any) error {
-	ss.log.Info("server send:", logger.NewField("message", m))
+	ss.log.Debug("server send:", logger.NewField("message", m))
 	return ss.ServerStream.SendMsg(m)
 }
 
 func (ss *wrappedServerStream) RecvMsg(m any) error {
 	err := ss.ServerStream.RecvMsg(m)
-	ss.log.Info("server recieve:", logger.NewField("message", m))
+	ss.log.Debug("server recieve:", logger.NewField("message", m))
 	return err
 }
