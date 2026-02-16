@@ -7,28 +7,59 @@ option go_package = "github.com/shft1/grpc-notes/pkg/api/notes/v1";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 
+import "google/api/annotations.proto";
+
 import "api/notes/v1/messages.proto";
 
 // NoteAPI - сервис заметок
 service NoteAPI {
   // Create - создание заметки
-  rpc Create(NoteCreateRequest) returns(Note) {};
+  rpc Create(NoteCreateRequest) returns(Note) {
+    option (google.api.http) = {
+      post: "/notes/gen/v1"
+      body: "*"
+    };
+  };
 
   // GetByID - получение заметки по ID
-  rpc GetByID(NoteIDRequest) returns(Note) {};
+  rpc GetByID(NoteIDRequest) returns(Note) {
+    option (google.api.http) = {
+      get: "/notes/gen/v1/{id}"
+    };
+  };
 
   // GetMulti - получение всех заметок
-  rpc GetMulti(google.protobuf.Empty) returns(NoteList) {};
+  rpc GetMulti(google.protobuf.Empty) returns(NoteList) {
+    option (google.api.http) = {
+      get: "/notes/gen/v1"
+    };
+  };
 
   // DeleteByID - удалить заметку
-  rpc DeleteByID(NoteIDRequest) returns(Note) {};
+  rpc DeleteByID(NoteIDRequest) returns(Note) {
+    option (google.api.http) = {
+      delete: "/notes/gen/v1/{id}"
+    };
+  };
 
   // SubscribeToEvents - подписка на событие "создание заметки"
-  rpc SubscribeToEvents(Empty) returns(stream EventResponse) {};
+  rpc SubscribeToEvents(Empty) returns(stream EventResponse) {
+    option (google.api.http) = {
+      get: "/notes/gen/v1/subscribe"
+    };
+  };
 
   // UploadMetrics - загрузка метрик
-  rpc UploadMetrics(stream MetricRequest) returns(SummaryResponse) {};
+  rpc UploadMetrics(stream MetricRequest) returns(SummaryResponse) {
+    option (google.api.http) = {
+      post: "/notes/gen/v1/metrics/upload"
+    };
+  };
 
   // Chat - двусторонний чат
-  rpc Chat(stream Message) returns(stream Message) {};
+  rpc Chat(stream Message) returns(stream Message) {
+    option (google.api.http) = {
+      post: "/notes/gen/v1/chat"
+    };
+  };
 }
