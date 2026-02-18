@@ -16,7 +16,7 @@
     "application/json"
   ],
   "paths": {
-    "/notes/gen/v1": {
+    "/notes/v1": {
       "get": {
         "summary": "GetMulti - получение всех заметок",
         "operationId": "NoteAPI_GetMulti",
@@ -70,7 +70,7 @@
         ]
       }
     },
-    "/notes/gen/v1/chat": {
+    "/notes/v1/chat": {
       "post": {
         "summary": "Chat - двусторонний чат",
         "operationId": "NoteAPI_Chat",
@@ -132,7 +132,7 @@
         ]
       }
     },
-    "/notes/gen/v1/metrics/upload": {
+    "/notes/v1/metrics/upload": {
       "post": {
         "summary": "UploadMetrics - загрузка метрик",
         "operationId": "NoteAPI_UploadMetrics",
@@ -164,7 +164,7 @@
         ]
       }
     },
-    "/notes/gen/v1/subscribe": {
+    "/notes/v1/subscribe": {
       "get": {
         "summary": "SubscribeToEvents - подписка на событие \"создание заметки\"",
         "operationId": "NoteAPI_SubscribeToEvents",
@@ -196,7 +196,7 @@
         ]
       }
     },
-    "/notes/gen/v1/{id}": {
+    "/notes/v1/{id}": {
       "get": {
         "summary": "GetByID - получение заметки по ID",
         "operationId": "NoteAPI_GetByID",

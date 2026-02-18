@@ -278,7 +278,7 @@ func RegisterNoteAPIHandlerServer(ctx context.Context, mux *runtime.ServeMux, se
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/api.notes.v1.NoteAPI/Create", runtime.WithHTTPPathPattern("/notes/gen/v1"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/api.notes.v1.NoteAPI/Create", runtime.WithHTTPPathPattern("/notes/v1"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -298,7 +298,7 @@ func RegisterNoteAPIHandlerServer(ctx context.Context, mux *runtime.ServeMux, se
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/api.notes.v1.NoteAPI/GetByID", runtime.WithHTTPPathPattern("/notes/gen/v1/{id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/api.notes.v1.NoteAPI/GetByID", runtime.WithHTTPPathPattern("/notes/v1/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -318,7 +318,7 @@ func RegisterNoteAPIHandlerServer(ctx context.Context, mux *runtime.ServeMux, se
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/api.notes.v1.NoteAPI/GetMulti", runtime.WithHTTPPathPattern("/notes/gen/v1"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/api.notes.v1.NoteAPI/GetMulti", runtime.WithHTTPPathPattern("/notes/v1"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -338,7 +338,7 @@ func RegisterNoteAPIHandlerServer(ctx context.Context, mux *runtime.ServeMux, se
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/api.notes.v1.NoteAPI/DeleteByID", runtime.WithHTTPPathPattern("/notes/gen/v1/{id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/api.notes.v1.NoteAPI/DeleteByID", runtime.WithHTTPPathPattern("/notes/v1/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -417,7 +417,7 @@ func RegisterNoteAPIHandlerClient(ctx context.Context, mux *runtime.ServeMux, cl
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/api.notes.v1.NoteAPI/Create", runtime.WithHTTPPathPattern("/notes/gen/v1"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/api.notes.v1.NoteAPI/Create", runtime.WithHTTPPathPattern("/notes/v1"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -434,7 +434,7 @@ func RegisterNoteAPIHandlerClient(ctx context.Context, mux *runtime.ServeMux, cl
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/api.notes.v1.NoteAPI/GetByID", runtime.WithHTTPPathPattern("/notes/gen/v1/{id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/api.notes.v1.NoteAPI/GetByID", runtime.WithHTTPPathPattern("/notes/v1/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -451,7 +451,7 @@ func RegisterNoteAPIHandlerClient(ctx context.Context, mux *runtime.ServeMux, cl
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/api.notes.v1.NoteAPI/GetMulti", runtime.WithHTTPPathPattern("/notes/gen/v1"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/api.notes.v1.NoteAPI/GetMulti", runtime.WithHTTPPathPattern("/notes/v1"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -468,7 +468,7 @@ func RegisterNoteAPIHandlerClient(ctx context.Context, mux *runtime.ServeMux, cl
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/api.notes.v1.NoteAPI/DeleteByID", runtime.WithHTTPPathPattern("/notes/gen/v1/{id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/api.notes.v1.NoteAPI/DeleteByID", runtime.WithHTTPPathPattern("/notes/v1/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -485,7 +485,7 @@ func RegisterNoteAPIHandlerClient(ctx context.Context, mux *runtime.ServeMux, cl
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/api.notes.v1.NoteAPI/SubscribeToEvents", runtime.WithHTTPPathPattern("/notes/gen/v1/subscribe"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/api.notes.v1.NoteAPI/SubscribeToEvents", runtime.WithHTTPPathPattern("/notes/v1/subscribe"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -502,7 +502,7 @@ func RegisterNoteAPIHandlerClient(ctx context.Context, mux *runtime.ServeMux, cl
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/api.notes.v1.NoteAPI/UploadMetrics", runtime.WithHTTPPathPattern("/notes/gen/v1/metrics/upload"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/api.notes.v1.NoteAPI/UploadMetrics", runtime.WithHTTPPathPattern("/notes/v1/metrics/upload"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -519,7 +519,7 @@ func RegisterNoteAPIHandlerClient(ctx context.Context, mux *runtime.ServeMux, cl
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/api.notes.v1.NoteAPI/Chat", runtime.WithHTTPPathPattern("/notes/gen/v1/chat"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/api.notes.v1.NoteAPI/Chat", runtime.WithHTTPPathPattern("/notes/v1/chat"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -536,13 +536,13 @@ func RegisterNoteAPIHandlerClient(ctx context.Context, mux *runtime.ServeMux, cl
 }
 
 var (
-	pattern_NoteAPI_Create_0            = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"notes", "gen", "v1"}, ""))
-	pattern_NoteAPI_GetByID_0           = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"notes", "gen", "v1", "id"}, ""))
-	pattern_NoteAPI_GetMulti_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"notes", "gen", "v1"}, ""))
-	pattern_NoteAPI_DeleteByID_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"notes", "gen", "v1", "id"}, ""))
-	pattern_NoteAPI_SubscribeToEvents_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"notes", "gen", "v1", "subscribe"}, ""))
-	pattern_NoteAPI_UploadMetrics_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 2, 4}, []string{"notes", "gen", "v1", "metrics", "upload"}, ""))
-	pattern_NoteAPI_Chat_0              = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"notes", "gen", "v1", "chat"}, ""))
+	pattern_NoteAPI_Create_0            = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"notes", "v1"}, ""))
+	pattern_NoteAPI_GetByID_0           = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"notes", "v1", "id"}, ""))
+	pattern_NoteAPI_GetMulti_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"notes", "v1"}, ""))
+	pattern_NoteAPI_DeleteByID_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"notes", "v1", "id"}, ""))
+	pattern_NoteAPI_SubscribeToEvents_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"notes", "v1", "subscribe"}, ""))
+	pattern_NoteAPI_UploadMetrics_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"notes", "v1", "metrics", "upload"}, ""))
+	pattern_NoteAPI_Chat_0              = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"notes", "v1", "chat"}, ""))
 )
 
 var (

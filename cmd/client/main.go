@@ -8,7 +8,9 @@ import (
 	"syscall"
 
 	"github.com/go-chi/chi"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/joho/godotenv"
+	openapi "github.com/shft1/grpc-notes/docs/api/notes/v1"
 	"github.com/shft1/grpc-notes/internal/client/config"
 	noteGW "github.com/shft1/grpc-notes/internal/client/gateway/notes/v1"
 	noteHand "github.com/shft1/grpc-notes/internal/client/handler/notes/v1"
@@ -17,6 +19,7 @@ import (
 	"github.com/shft1/grpc-notes/internal/client/server"
 	"github.com/shft1/grpc-notes/observability/logger"
 	pb "github.com/shft1/grpc-notes/pkg/api/notes/v1"
+	"github.com/shft1/grpc-notes/static/swagger"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -51,6 +54,7 @@ func main() {
 	defer conn.Close()
 
 	notePB := pb.NewNoteAPIClient(conn)
+
 	noteGW := noteGW.NewNoteGateway(zlog, notePB)
 	noteHand := noteHand.NewNoteHandler(sysCtx, zlog, noteGW)
 
@@ -59,6 +63,13 @@ func main() {
 	noteRoute := noteRoute.NewNoteRouter(router, noteHand)
 	noteRoute.SetupRoutesV1()
 
-	srv := server.NewHTTPServer(zlog, router, cfg)
+	gwRouter := runtime.NewServeMux()
+	if err = pb.RegisterNoteAPIHandlerClient(sysCtx, gwRouter, notePB); err != nil {
+		zlog.Error("failed to register endpoints to gateway router", logger.NewField("error", err))
+		return
+	}
+	noteRoute.SetupGenRoutesV1(gwRouter, swagger.Content, openapi.Content)
+
+	srv := server.NewHTTPServer(zlog, router, cfg.Host, cfg.Port)
 	srv.StartGracefully(sysCtx)
 }
