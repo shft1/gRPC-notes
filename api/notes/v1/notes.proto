@@ -10,6 +10,7 @@ import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";
 
 import "api/notes/v1/messages.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
 
 // NoteAPI - сервис заметок
 service NoteAPI {

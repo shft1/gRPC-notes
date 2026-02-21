@@ -41,10 +41,10 @@ func (nr *NoteRouter) SetupGenRoutesV1(gwMux http.Handler, corsMW middleware, sw
 
 		r.Route("/swagger", func(r chi.Router) {
 			r.Get("/*", func(w http.ResponseWriter, r *http.Request) {
-				http.FileServerFS(swaggerUI).ServeHTTP(w, r)
+				http.StripPrefix("/gen/v1/swagger/", http.FileServerFS(swaggerUI)).ServeHTTP(w, r)
 			})
 			r.Get("/specs/*", func(w http.ResponseWriter, r *http.Request) {
-				http.StripPrefix("/specs", http.FileServerFS(specs)).ServeHTTP(w, r)
+				http.StripPrefix("/gen/v1/swagger/specs/", http.FileServerFS(specs)).ServeHTTP(w, r)
 			})
 		})
 		r.Mount("/", http.StripPrefix("/gen/v1", wsproxy.WebsocketProxy(gwMux)))
