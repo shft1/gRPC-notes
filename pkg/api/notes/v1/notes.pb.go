@@ -7,6 +7,7 @@
 package v1
 
 import (
+	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -27,16 +28,32 @@ var File_api_notes_v1_notes_proto protoreflect.FileDescriptor
 
 const file_api_notes_v1_notes_proto_rawDesc = "" +
 	"\n" +
-	"\x18api/notes/v1/notes.proto\x12\fapi.notes.v1\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1bapi/notes/v1/messages.proto2\x81\x05\n" +
-	"\aNoteAPI\x12S\n" +
-	"\x06Create\x12\x1f.api.notes.v1.NoteCreateRequest\x1a\x12.api.notes.v1.Note\"\x14\x82\xd3\xe4\x93\x02\x0e:\x01*\"\t/notes/v1\x12R\n" +
-	"\aGetByID\x12\x1b.api.notes.v1.NoteIDRequest\x1a\x12.api.notes.v1.Note\"\x16\x82\xd3\xe4\x93\x02\x10\x12\x0e/notes/v1/{id}\x12M\n" +
-	"\bGetMulti\x12\x16.google.protobuf.Empty\x1a\x16.api.notes.v1.NoteList\"\x11\x82\xd3\xe4\x93\x02\v\x12\t/notes/v1\x12U\n" +
+	"\x18api/notes/v1/notes.proto\x12\fapi.notes.v1\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1bapi/notes/v1/messages.proto\x1a.protoc-gen-openapiv2/options/annotations.proto2\xf1\x05\n" +
+	"\aNoteAPI\x12l\n" +
+	"\x06Create\x12\x1f.api.notes.v1.NoteCreateRequest\x1a\x12.api.notes.v1.Note\"-\x92A\x12b\x10\n" +
+	"\x0e\n" +
 	"\n" +
-	"DeleteByID\x12\x1b.api.notes.v1.NoteIDRequest\x1a\x12.api.notes.v1.Note\"\x16\x82\xd3\xe4\x93\x02\x10*\x0e/notes/v1/{id}\x12d\n" +
-	"\x11SubscribeToEvents\x12\x13.api.notes.v1.Empty\x1a\x1b.api.notes.v1.EventResponse\"\x1b\x82\xd3\xe4\x93\x02\x15\x12\x13/notes/v1/subscribe0\x01\x12o\n" +
-	"\rUploadMetrics\x12\x1b.api.notes.v1.MetricRequest\x1a\x1d.api.notes.v1.SummaryResponse\" \x82\xd3\xe4\x93\x02\x1a\"\x18/notes/v1/metrics/upload(\x01\x12P\n" +
-	"\x04Chat\x12\x15.api.notes.v1.Message\x1a\x15.api.notes.v1.Message\"\x16\x82\xd3\xe4\x93\x02\x10\"\x0e/notes/v1/chat(\x010\x01B.Z,github.com/shft1/grpc-notes/pkg/api/notes/v1b\x06proto3"
+	"BearerAuth\x12\x00\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/gen/v1/notes\x12k\n" +
+	"\aGetByID\x12\x1b.api.notes.v1.NoteIDRequest\x1a\x12.api.notes.v1.Note\"/\x92A\x12b\x10\n" +
+	"\x0e\n" +
+	"\n" +
+	"BearerAuth\x12\x00\x82\xd3\xe4\x93\x02\x14\x12\x12/gen/v1/notes/{id}\x12f\n" +
+	"\bGetMulti\x12\x16.google.protobuf.Empty\x1a\x16.api.notes.v1.NoteList\"*\x92A\x12b\x10\n" +
+	"\x0e\n" +
+	"\n" +
+	"BearerAuth\x12\x00\x82\xd3\xe4\x93\x02\x0f\x12\r/gen/v1/notes\x12n\n" +
+	"\n" +
+	"DeleteByID\x12\x1b.api.notes.v1.NoteIDRequest\x1a\x12.api.notes.v1.Note\"/\x92A\x12b\x10\n" +
+	"\x0e\n" +
+	"\n" +
+	"BearerAuth\x12\x00\x82\xd3\xe4\x93\x02\x14*\x12/gen/v1/notes/{id}\x12h\n" +
+	"\x11SubscribeToEvents\x12\x13.api.notes.v1.Empty\x1a\x1b.api.notes.v1.EventResponse\"\x1f\x82\xd3\xe4\x93\x02\x19\x12\x17/gen/v1/notes/subscribe0\x01\x12s\n" +
+	"\rUploadMetrics\x12\x1b.api.notes.v1.MetricRequest\x1a\x1d.api.notes.v1.SummaryResponse\"$\x82\xd3\xe4\x93\x02\x1e\"\x1c/gen/v1/notes/metrics/upload(\x01\x12T\n" +
+	"\x04Chat\x12\x15.api.notes.v1.Message\x1a\x15.api.notes.v1.Message\"\x1a\x82\xd3\xe4\x93\x02\x14\"\x12/gen/v1/notes/chat(\x010\x01Bf\x92A5\x12\x0e\n" +
+	"\aNoteAPI2\x031.0Z#\n" +
+	"!\n" +
+	"\n" +
+	"BearerAuth\x12\x13\b\x02\x1a\rAuthorization \x02Z,github.com/shft1/grpc-notes/pkg/api/notes/v1b\x06proto3"
 
 var file_api_notes_v1_notes_proto_goTypes = []any{
 	(*NoteCreateRequest)(nil), // 0: api.notes.v1.NoteCreateRequest

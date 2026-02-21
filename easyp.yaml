@@ -29,6 +29,7 @@ lint:
 deps:
   - github.com/googleapis/googleapis
   - github.com/bufbuild/protovalidate@v0.3.0
+  - github.com/grpc-ecosystem/grpc-gateway
 
 generate:
     inputs:

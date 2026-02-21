@@ -1,8 +1,8 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "api/notes/v1/notes.proto",
-    "version": "version not set"
+    "title": "NoteAPI",
+    "version": "1.0"
   },
   "tags": [
     {
@@ -16,7 +16,7 @@
     "application/json"
   ],
   "paths": {
-    "/notes/v1": {
+    "/gen/v1/notes": {
       "get": {
         "summary": "GetMulti - получение всех заметок",
         "operationId": "NoteAPI_GetMulti",
@@ -36,6 +36,11 @@
         },
         "tags": [
           "api.notes.v1.NoteAPI"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
         ]
       },
       "post": {
@@ -67,10 +72,15 @@
         ],
         "tags": [
           "api.notes.v1.NoteAPI"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
         ]
       }
     },
-    "/notes/v1/chat": {
+    "/gen/v1/notes/chat": {
       "post": {
         "summary": "Chat - двусторонний чат",
         "operationId": "NoteAPI_Chat",
@@ -132,7 +142,7 @@
         ]
       }
     },
-    "/notes/v1/metrics/upload": {
+    "/gen/v1/notes/metrics/upload": {
       "post": {
         "summary": "UploadMetrics - загрузка метрик",
         "operationId": "NoteAPI_UploadMetrics",
@@ -164,7 +174,7 @@
         ]
       }
     },
-    "/notes/v1/subscribe": {
+    "/gen/v1/notes/subscribe": {
       "get": {
         "summary": "SubscribeToEvents - подписка на событие \"создание заметки\"",
         "operationId": "NoteAPI_SubscribeToEvents",
@@ -196,7 +206,7 @@
         ]
       }
     },
-    "/notes/v1/{id}": {
+    "/gen/v1/notes/{id}": {
       "get": {
         "summary": "GetByID - получение заметки по ID",
         "operationId": "NoteAPI_GetByID",
@@ -224,6 +234,11 @@
         ],
         "tags": [
           "api.notes.v1.NoteAPI"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
         ]
       },
       "delete": {
@@ -253,6 +268,11 @@
         ],
         "tags": [
           "api.notes.v1.NoteAPI"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
         ]
       }
     }
@@ -401,6 +421,13 @@
         }
       },
       "title": "SummaryResponse - сообщение по завершении client-stream"
+    }
+  },
+  "securityDefinitions": {
+    "BearerAuth": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
     }
   }
 }

@@ -47,6 +47,6 @@ func (nr *NoteRouter) SetupGenRoutesV1(gwMux http.Handler, corsMW middleware, sw
 				http.StripPrefix("/gen/v1/swagger/specs/", http.FileServerFS(specs)).ServeHTTP(w, r)
 			})
 		})
-		r.Mount("/", http.StripPrefix("/gen/v1", wsproxy.WebsocketProxy(gwMux)))
+		r.Mount("/", wsproxy.WebsocketProxy(gwMux))
 	})
 }
