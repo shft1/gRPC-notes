@@ -20,7 +20,10 @@ require (
 	cel.dev/expr v0.25.1 // indirect
 	github.com/antlr4-go/antlr/v4 v4.13.1 // indirect
 	github.com/google/cel-go v0.26.1 // indirect
+	github.com/gorilla/websocket v1.4.2 // indirect
+	github.com/sirupsen/logrus v1.8.1 // indirect
 	github.com/stoewer/go-strcase v1.3.1 // indirect
+	github.com/tmc/grpc-websocket-proxy v0.0.0-20220101234140-673ab2c3ae75 // indirect
 	go.uber.org/multierr v1.10.0 // indirect
 	golang.org/x/exp v0.0.0-20250813145105-42675adae3e6 // indirect
 	golang.org/x/net v0.48.0 // indirect

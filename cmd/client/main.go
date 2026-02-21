@@ -14,7 +14,8 @@ import (
 	"github.com/shft1/grpc-notes/internal/client/config"
 	noteGW "github.com/shft1/grpc-notes/internal/client/gateway/notes/v1"
 	noteHand "github.com/shft1/grpc-notes/internal/client/handler/notes/v1"
-	"github.com/shft1/grpc-notes/internal/client/middleware/stream"
+	"github.com/shft1/grpc-notes/internal/client/interceptor/stream"
+	"github.com/shft1/grpc-notes/internal/client/middleware/cors"
 	noteRoute "github.com/shft1/grpc-notes/internal/client/router/notes/v1"
 	"github.com/shft1/grpc-notes/internal/client/server"
 	"github.com/shft1/grpc-notes/observability/logger"
@@ -59,16 +60,26 @@ func main() {
 	noteHand := noteHand.NewNoteHandler(sysCtx, zlog, noteGW)
 
 	router := chi.NewRouter()
+	mainRouter := noteRoute.NewNoteRouter(router, noteHand)
 
-	noteRoute := noteRoute.NewNoteRouter(router, noteHand)
-	noteRoute.SetupRoutesV1()
+	mainRouter.SetupRoutesV1()
 
 	gwRouter := runtime.NewServeMux()
-	if err = pb.RegisterNoteAPIHandlerClient(sysCtx, gwRouter, notePB); err != nil {
+	if err = pb.RegisterNoteAPIHandlerFromEndpoint(
+		sysCtx,
+		gwRouter,
+		net.JoinHostPort(cfg.HostGRPC, cfg.PortGRPC),
+		[]grpc.DialOption{
+			grpc.WithChainStreamInterceptor(logStreamInter),
+			grpc.WithTransportCredentials(insecure.NewCredentials()),
+		},
+	); err != nil {
 		zlog.Error("failed to register endpoints to gateway router", logger.NewField("error", err))
 		return
 	}
-	noteRoute.SetupGenRoutesV1(gwRouter, swagger.Content, openapi.Content)
+	corsMW := cors.NewCORSMiddleware(zlog)
+
+	mainRouter.SetupGenRoutesV1(gwRouter, corsMW, swagger.Content, openapi.Content)
 
 	srv := server.NewHTTPServer(zlog, router, cfg.Host, cfg.Port)
 	srv.StartGracefully(sysCtx)
