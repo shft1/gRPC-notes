@@ -22,7 +22,7 @@ func NewEventBus(log logger.Logger, cap int) *eventBus {
 func (b *eventBus) Produce(event *notes.NoteEvent) {
 	select {
 	case b.bus <- event:
-		b.log.Info(
+		b.log.Debug(
 			"event has been sent to the bus",
 			logger.NewField("id", event.ID),
 			logger.NewField("title", event.Title),

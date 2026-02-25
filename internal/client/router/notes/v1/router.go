@@ -1,9 +1,15 @@
 package v1
 
 import (
+	"embed"
+	"net/http"
+
 	"github.com/go-chi/chi"
 	v1 "github.com/shft1/grpc-notes/internal/client/handler/notes/v1"
+	"github.com/tmc/grpc-websocket-proxy/wsproxy"
 )
+
+type middleware func(http.Handler) http.Handler
 
 type NoteRouter struct {
 	main *chi.Mux
@@ -26,5 +32,21 @@ func (nr *NoteRouter) SetupRoutesV1() {
 		r.Get("/subscribe", nr.hand.SubscribeToEvents)
 		r.Post("/metrics/upload", nr.hand.UploadMetrics)
 		r.Post("/chat", nr.hand.Chat)
+	})
+}
+
+func (nr *NoteRouter) SetupGenRoutesV1(gwMux http.Handler, corsMW middleware, swaggerUI, specs embed.FS) {
+	nr.main.Route("/gen/v1", func(r chi.Router) {
+		r.Use(corsMW)
+
+		r.Route("/swagger", func(r chi.Router) {
+			r.Get("/*", func(w http.ResponseWriter, r *http.Request) {
+				http.StripPrefix("/gen/v1/swagger/", http.FileServerFS(swaggerUI)).ServeHTTP(w, r)
+			})
+			r.Get("/specs/*", func(w http.ResponseWriter, r *http.Request) {
+				http.StripPrefix("/gen/v1/swagger/specs/", http.FileServerFS(specs)).ServeHTTP(w, r)
+			})
+		})
+		r.Mount("/", wsproxy.WebsocketProxy(gwMux))
 	})
 }
