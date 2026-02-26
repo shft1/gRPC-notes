@@ -54,3 +54,7 @@ generate:
           generate_unbound_methods: true
           allow_repeated_fields_in_body: true
           include_package_in_tags: true
+      - name: fast-equal
+        out: ./pkg/
+        opts:
+          paths: source_relative
